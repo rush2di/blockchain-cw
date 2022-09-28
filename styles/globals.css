@@ -7,11 +7,43 @@
 
 @layer base {
   html {
-    @apply scroll-smooth bg-gray-5 snap-y snap-proximity;
+    @apply scroll-smooth bg-dark snap-y snap-proximity;
   }
   body {
-    @apply bg-gray-5 text-gray-500 font-prim;
+    @apply bg-dark text-shades-10 font-prim;
   }
   p {
-    @apply font-prim text-base font-normal leading-loose tracking-wide text-gray-500;
+    @apply font-prim text-base font-normal leading-loose tracking-wide text-shades-10;
   }
+}
+
+@layer components {
+  .btn {
+    @apply px-1-5 py-0-5 border border-shades-5 bg-shades-7 text-shades-2 w-full;
+  }
+  .btn--light {
+    @apply border-shades-7 bg-shades-10 text-shades-1 font-bold hover:bg-shades-8 hover:border-shades-5;
+  }
+  .btn--dark {
+    @apply border-shades-3 bg-shades-1 text-shades-10 font-bold hover:bg-shades-2 hover:border-shades-4;
+  }
+  .btn--prim {
+    @apply border-amber-700 bg-amber-500 text-shades-10 hover:bg-amber-600;
+  }
+  .btn--flex-center {
+    @apply flex items-center justify-center;
+  }
+  .btn--flex-between {
+    @apply flex items-center justify-between;
+  }
+  .btn--rounded {
+    @apply rounded-lg;
+  }
+  .v-seperator {
+    @apply w-[1px] h-full min-h-[30px] bg-shades-3 rounded border-none;
+  }
+  .overlay {
+    @apply w-full h-full absolute bg-dark opacity-60;
+    content: "";
+  }
+}

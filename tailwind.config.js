@@ -17,6 +17,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        dark: "linear-gradient(180deg, #101010 0%, #0D0D0D 100%)",
+        pattern: "url('/assets/pattern.png')",
+      },
       colors: {
         shades: {
           1: "#181818",
@@ -30,6 +34,7 @@ module.exports = {
           9: "#F4F4F4",
           10: "#FAFAFA",
         },
+        ...defaultTheme.colors,
       },
       keyframes: {
         arrow: {
