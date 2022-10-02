@@ -1,5 +1,3 @@
-import React from "react";
-
 const GameNav = () => {
   return (
     <div className="w-full py-0-5 bg-shades-1 border-shades-3 rounded-lg px-1">

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React, { ReactNode } from "react";
 import { progressPercent } from "./utils";
 
 interface TicketProps extends ProgressBarProps {
@@ -31,7 +30,7 @@ const Ticket = ({
   return (
     <div className="w-full bg-shades-1 border-shades-3 rounded-lg ">
       <div className="flex flex-col md:flex-row items-center">
-        <div className="min-h-[320px] w-full md:w-[370px] md:self-stretch flex items-center justify-center relative after:overlay overflow-hidden rounded-t-lg md:rounded-l-lg">
+        <div className="min-h-[320px] w-full md:w-[370px] md:self-stretch flex items-center justify-center relative after:overlay overflow-hidden rounded-t-lg md:rounded-l-lg md:rounded-tr-none">
           <Image
             src={"https://source.unsplash.com/yJpjLD3c9bU"}
             layout="fill"

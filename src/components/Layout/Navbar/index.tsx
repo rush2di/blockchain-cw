@@ -1,7 +1,21 @@
 import Image from "next/image";
 import { _APP_NAME } from "utils/globales/constants";
 
-const Navbar = () => {
+interface NavbarProps {
+  currentAccount: string | null;
+  handleConnect(): void;
+  handleDisconnect(): void;
+}
+
+const Navbar = ({
+  currentAccount,
+  handleConnect,
+  handleDisconnect,
+}: NavbarProps) => {
+  const handleClick = () => {
+    currentAccount === null ? handleConnect() : handleDisconnect();
+  };
+
   return (
     <nav className="bg-shades-1 w-full border-b border-shades-3">
       <div className="container">
@@ -13,8 +27,11 @@ const Navbar = () => {
             <span className="ml-0-5 font-bold">{_APP_NAME}</span>
           </div>
           <div>
-            <button className="btn btn--light btn--rounded">
-              Connect Wallet
+            <button
+              onClick={handleClick}
+              className="btn btn--light btn--rounded"
+            >
+              {currentAccount === null ? "Connect Wallet" : "Disconnect Wallet"}
             </button>
           </div>
         </div>
