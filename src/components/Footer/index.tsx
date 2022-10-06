@@ -1,5 +1,5 @@
 import React from "react";
-import { _APP_NAME } from "utils/globales/constants";
+import { _APP_NAME } from "shared/constants";
 
 
 const Footer = () => {

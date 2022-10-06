@@ -4,7 +4,7 @@ const GameNav = () => {
       <div className="flex items-center mx-auto lg:w-3/6 w-full">
         <button className="btn btn--dark btn--rounded">My Subscribtion</button>
         <hr className="v-seperator mx-1" />
-        <button className="btn btn--dark btn--rounded">Live Game</button>
+        <button className="btn btn--prim btn--rounded">Live Game</button>
       </div>
     </div>
   );

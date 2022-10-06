@@ -1,21 +1,14 @@
 import Image from "next/image";
-import { _APP_NAME } from "utils/globales/constants";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
+
+import { _APP_NAME } from "shared/constants";
 
 interface NavbarProps {
   currentAccount: string | null;
   handleConnect(): void;
-  handleDisconnect(): void;
 }
 
-const Navbar = ({
-  currentAccount,
-  handleConnect,
-  handleDisconnect,
-}: NavbarProps) => {
-  const handleClick = () => {
-    currentAccount === null ? handleConnect() : handleDisconnect();
-  };
-
+const Navbar = ({ currentAccount, handleConnect }: NavbarProps) => {
   return (
     <nav className="bg-shades-1 w-full border-b border-shades-3">
       <div className="container">
@@ -28,15 +21,26 @@ const Navbar = ({
           </div>
           <div>
             <button
-              onClick={handleClick}
-              className="btn btn--light btn--rounded"
+              onClick={handleConnect}
+              className="btn btn--light btn--rounded btn--flex-center"
             >
-              {currentAccount === null ? "Connect Wallet" : "Disconnect Wallet"}
+              {currentAccount === null
+                ? "Connect MetaMask"
+                : "Connected"}
+              {currentAccount !== null && <ConnectionBadge />}
             </button>
           </div>
         </div>
       </div>
     </nav>
+  );
+};
+
+const ConnectionBadge = () => {
+  return (
+    <span className="h-[1.40rem] w-[1.40rem] rounded-[50%] ml-0-45 flex items-center justify-center bg-inherit">
+      <CheckCircleIcon className="w-full h-full text-green-600" />
+    </span>
   );
 };
 

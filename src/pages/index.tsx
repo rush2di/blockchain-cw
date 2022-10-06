@@ -1,8 +1,8 @@
-import Block from "components/Block";
-import GameNav from "components/GameNav";
-import Layout from "components/Layout";
-import Ticket from "components/Ticket";
 import type { NextPage } from "next";
+
+import Block from "components/Block";
+import Layout from "containers/Layout";
+import TicketContainer from "containers/TicketContainer";
 
 const Chainprizes: NextPage = () => {
   return (
@@ -16,22 +16,7 @@ const Chainprizes: NextPage = () => {
           BUSD !
         </p>
       </section>
-      <section className="container pt-3">
-        <GameNav />
-        <div className="pt-2">
-          <Ticket
-            title={`1$ Game \nTicket`}
-            heading="10.000 BUSD Prize Reward"
-            intro="Enter the game with 1 BSC Network BUSD/USDT/USDC"
-            winOutcome="One lucky player will win 10.000 BUSD"
-            loseOutcome="If you don’t win you can withdraw your 1$  or use it to enter another game"
-            entryPrice={1}
-            prevPrice={10000}
-            minimumPlayers={10000}
-            currentPlayers={1762}
-          />
-        </div>
-      </section>
+      <TicketContainer />
       <section className="container pt-2">
         <Block
           title="How to Participate"

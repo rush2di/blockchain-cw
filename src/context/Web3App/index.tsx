@@ -1,75 +1,91 @@
-import { useState, useEffect, createContext, ReactNode } from "react";
-import initWeb3, { initWeb3Response } from "services/ethers";
+import { Contract } from "ethers";
+import { Web3Provider } from "@ethersproject/providers";
+import { useEffect, createContext, useReducer } from "react";
 
-interface Web3AppContextProps extends initWeb3Response {
-  mmInstalled: boolean | null;
-  currentAccount: string | null;
-  connectAccount(account: string | null): void;
-}
-
-interface Web3AppProviderProps {
-  children: ReactNode;
-}
+import { web3InitState, web3Reducer } from "./reducers";
+import { Web3AppContextProps, Web3AppProviderProps } from "./types";
+import initWeb3, { dappContractsProps } from "services/ethers";
+import {
+  setStorageSavedApproval,
+  getStorageSavedApproval,
+  mmAlertLogger,
+} from "./utils";
+import {
+  onAccountStateChanged,
+  onConnectWallet,
+  onDetectWallet,
+} from "./actions";
 
 export const Web3AppContext = createContext<Web3AppContextProps>({
-  mmInstalled: null,
-  currentAccount: null,
-  chainPrizes: undefined,
-  mockBUSD: undefined,
-  mockUSDT: undefined,
-  mockUSDC: undefined,
+  ...web3InitState,
   connectAccount: () => {},
 });
 
 const Web3AppProvider = ({ children }: Web3AppProviderProps) => {
-  const [provider, setProvider] = useState<any | null>(null);
-  const [currentAccount, setCurrentAccount] = useState<string | null>(null);
-  const [mmInstalled, setMmInstalled] = useState<boolean | null>(null);
-  const [chainPrizes_abi, setChainPrizes_abi] = useState<any>();
-  const [mockBUSD_abi, setMockBUSD_abi] = useState<any>();
-  const [mockUSDT_abi, setMockUSDT_abi] = useState<any>();
-  const [mockUSDC_abi, setMockUSDC_abi] = useState<any>();
+  const [state, dispatch] = useReducer(web3Reducer, web3InitState);
+
+  const connectAccount = (account: string) => {
+    dispatch(onAccountStateChanged(account));
+    setStorageSavedApproval({ account: account, isApproved: true });
+  };
+
+  const handleAccountsChange = (accounts: Array<string>) => {
+    if (accounts.length !== 0) {
+      dispatch(onAccountStateChanged(accounts[0]));
+      setStorageSavedApproval({ account: accounts[0], isApproved: true });
+    } else if (accounts.length === 0) {
+      dispatch(onAccountStateChanged(null));
+      setStorageSavedApproval({ account: null, isApproved: false });
+    }
+  };
 
   useEffect(() => {
+    const prevSessionData = getStorageSavedApproval();
+
     if (!window.ethereum) {
-      console.error("Please install MetaMask");
-      setMmInstalled(false);
+      mmAlertLogger();
+      dispatch(onDetectWallet(false));
     } else {
-      setMmInstalled(true);
+      dispatch(onDetectWallet(true));
+      prevSessionData !== null &&
+        dispatch(onAccountStateChanged(prevSessionData.account));
+      window.ethereum.on("accountsChanged", (accounts: Array<string>) =>
+        handleAccountsChange(accounts)
+      );
     }
+
+    return () => {
+      window.ethereum?.removeListener("accountsChanged", handleAccountsChange);
+    };
   }, []);
 
   useEffect(() => {
     const init = async () => {
-      const { provider, chainPrizes, mockBUSD, mockUSDT, mockUSDC } =
-        await initWeb3();
-      setProvider(provider);
-      setChainPrizes_abi(chainPrizes);
-      setMockBUSD_abi(mockBUSD);
-      setMockUSDT_abi(mockUSDT);
-      setMockUSDC_abi(mockUSDC);
+      const { provider, contracts } = await initWeb3();
+      dispatch(
+        onConnectWallet({
+          provider: provider as Web3Provider,
+          contracts: contracts as dappContractsProps<Contract>,
+        })
+      );
     };
 
-    if (currentAccount !== null && provider === null) {
-      init();
-    }
-  }, [currentAccount]);
-
-  const connectAccount = (account: string | null) => {
-    setCurrentAccount(account);
-  };
+    init().catch((err) => console.log(err));
+  }, []);
 
   return (
     <Web3AppContext.Provider
       value={{
-        provider: provider,
-        mmInstalled: mmInstalled,
-        currentAccount: currentAccount,
+        provider: state.provider,
+        mmInstalled: state.mmInstalled,
+        currentAccount: state.currentAccount,
         connectAccount: connectAccount,
-        chainPrizes: chainPrizes_abi,
-        mockBUSD: mockBUSD_abi,
-        mockUSDT: mockUSDT_abi,
-        mockUSDC: mockUSDC_abi,
+        contracts: {
+          chainPrizes: state.contracts.chainPrizes,
+          mockBUSD: state.contracts.mockBUSD,
+          mockUSDT: state.contracts.mockUSDT,
+          mockUSDC: state.contracts.mockUSDC,
+        },
       }}
     >
       {children}

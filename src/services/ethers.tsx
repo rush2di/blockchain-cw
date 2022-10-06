@@ -6,43 +6,66 @@ import MockUSDT from "contracts/MockUSDT.json";
 import MockUSDC from "contracts/MockUSDC.json";
 
 import {
-  _CHAINPRIZES_ADDRESS,
-  _MOCKBUSD_ADDRESS,
-  _MOCKUSDT_ADDRESS,
-  _MOCKUSDC_ADDRESS,
-} from "utils/globales/constants";
+  CHAINPRIZES_ADDRESS,
+  MOCKBUSD_ADDRESS,
+  MOCKUSDT_ADDRESS,
+  MOCKUSDC_ADDRESS,
+} from "shared/constants";
 
-export interface initWeb3Response {
-  provider?: any;
-  chainPrizes: any;
-  mockBUSD: any;
-  mockUSDT: any;
-  mockUSDC: any;
+export interface dappContractsProps<T> {
+  chainPrizes: T;
+  mockBUSD: T;
+  mockUSDT: T;
+  mockUSDC: T;
 }
 
-const initWeb3 = async (): Promise<initWeb3Response> => {
+export interface initWeb3Response<T1, T2> {
+  provider: T1;
+  contracts: dappContractsProps<T2>;
+}
+
+const initWeb3 = async (): Promise<
+  initWeb3Response<ethers.providers.Web3Provider | null, ethers.Contract | null>
+> => {
   if (window.ethereum) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
     const chainPrizes = new Contract(
-      _CHAINPRIZES_ADDRESS,
+      CHAINPRIZES_ADDRESS as string,
       ChainPrizes.abi,
       signer
     );
 
-    const mockBUSD = new Contract(_MOCKBUSD_ADDRESS, MockBUSD.abi, signer);
-    const mockUSDT = new Contract(_MOCKUSDT_ADDRESS, MockUSDT.abi, signer);
-    const mockUSDC = new Contract(_MOCKUSDC_ADDRESS, MockUSDC.abi, signer);
+    const mockBUSD = new Contract(
+      MOCKBUSD_ADDRESS as string,
+      MockBUSD.abi,
+      signer
+    );
+    const mockUSDT = new Contract(
+      MOCKUSDT_ADDRESS as string,
+      MockUSDT.abi,
+      signer
+    );
+    const mockUSDC = new Contract(
+      MOCKUSDC_ADDRESS as string,
+      MockUSDC.abi,
+      signer
+    );
 
-    return { provider, chainPrizes, mockBUSD, mockUSDT, mockUSDC };
+    return {
+      provider,
+      contracts: { chainPrizes, mockBUSD, mockUSDT, mockUSDC },
+    };
   } else {
     return {
-      provider: undefined,
-      chainPrizes: undefined,
-      mockBUSD: undefined,
-      mockUSDT: undefined,
-      mockUSDC: undefined,
+      provider: null,
+      contracts: {
+        chainPrizes: null,
+        mockBUSD: null,
+        mockUSDT: null,
+        mockUSDC: null,
+      },
     };
   }
 };
