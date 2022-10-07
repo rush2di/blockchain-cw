@@ -5,16 +5,15 @@ import { useEffect, createContext, useReducer } from "react";
 import { web3InitState, web3Reducer } from "./reducers";
 import { Web3AppContextProps, Web3AppProviderProps } from "./types";
 import initWeb3, { dappContractsProps } from "services/ethers";
-import {
-  setStorageSavedApproval,
-  getStorageSavedApproval,
-  mmAlertLogger,
-} from "./utils";
+
 import {
   onAccountStateChanged,
   onConnectWallet,
   onDetectWallet,
 } from "./actions";
+import { setSessionStorageNewAcc, mmAlertLogger } from "./utils";
+import { getSessionStorageData } from "shared/utils";
+import { DAPP_STORAGE_KEY } from "shared/constants";
 
 export const Web3AppContext = createContext<Web3AppContextProps>({
   ...web3InitState,
@@ -26,30 +25,26 @@ const Web3AppProvider = ({ children }: Web3AppProviderProps) => {
 
   const connectAccount = (account: string) => {
     dispatch(onAccountStateChanged(account));
-    setStorageSavedApproval({ account: account, isApproved: true });
+    setSessionStorageNewAcc({ account: account, isApproved: true });
   };
 
-  const handleAccountsChange = (accounts: Array<string>) => {
+  const handleAccountsChange = (accounts: string[]) => {
     if (accounts.length !== 0) {
       dispatch(onAccountStateChanged(accounts[0]));
-      setStorageSavedApproval({ account: accounts[0], isApproved: true });
+      setSessionStorageNewAcc({ account: accounts[0], isApproved: true });
     } else if (accounts.length === 0) {
       dispatch(onAccountStateChanged(null));
-      setStorageSavedApproval({ account: null, isApproved: false });
+      setSessionStorageNewAcc({ account: null, isApproved: false });
     }
   };
 
   useEffect(() => {
-    const prevSessionData = getStorageSavedApproval();
-
     if (!window.ethereum) {
       mmAlertLogger();
       dispatch(onDetectWallet(false));
     } else {
       dispatch(onDetectWallet(true));
-      prevSessionData !== null &&
-        dispatch(onAccountStateChanged(prevSessionData.account));
-      window.ethereum.on("accountsChanged", (accounts: Array<string>) =>
+      window.ethereum.on("accountsChanged", (accounts: string[]) =>
         handleAccountsChange(accounts)
       );
     }

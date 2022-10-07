@@ -1,5 +1,3 @@
-import { ethers } from "ethers";
-
 export const _APP_NAME: string = "Chainprizes";
 
 export const CHAINPRIZES_ADDRESS = process.env.NEXT_PUBLIC_CHAINPRIZES_ADDRESS || "";
@@ -23,3 +21,5 @@ export const GAME_FEE_1 = process.env.NEXT_PUBLIC_GAME_FEE_1 || "0.001";
 export const GAME_FEE_2 = process.env.NEXT_PUBLIC_GAME_FEE_2 || "0.003";
 
 export const GAME_FEE_3 = process.env.NEXT_PUBLIC_GAME_FEE_3_PLUS || "0.007";
+
+export const DAPP_STORAGE_KEY = "isDappApproved";

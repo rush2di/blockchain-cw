@@ -1,12 +1,14 @@
 import type { NextPage } from "next";
 
 import Block from "components/Block";
-import Layout from "containers/Layout";
-import TicketContainer from "containers/TicketContainer";
+import Layout from "components/Layout";
+import Debuger from "components/Debuger";
+import GameInterface from "components/GameInterface";
 
 const Chainprizes: NextPage = () => {
   return (
     <Layout>
+      {/* <Debuger /> */}
       <section className="container pt-5">
         <h1 className="text-shades-10 font-extrabold text-2xl mb-0-75">
           No Lose 1$ Game
@@ -16,7 +18,9 @@ const Chainprizes: NextPage = () => {
           BUSD !
         </p>
       </section>
-      <TicketContainer />
+      <section className="container pt-3">
+        <GameInterface />
+      </section>
       <section className="container pt-2">
         <Block
           title="How to Participate"

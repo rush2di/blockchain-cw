@@ -3,7 +3,7 @@ import { ReactNode, useContext } from "react";
 import MetamaskAlert from "components/MetamaskAlert";
 import Footer from "components/Footer";
 import Navbar from "components/Navbar";
-import { Web3AppContext } from "context/Web3App";
+import { Web3AppContext } from "context/Web3";
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,7 +19,9 @@ const Layout = ({ children }: LayoutProps) => {
     provider
       .send("eth_requestAccounts", [])
       .then((accounts) => {
-        if (accounts.length > 0) connectAccount(accounts[0]);
+        if (accounts.length > 0 && typeof connectAccount !== "undefined") {
+          connectAccount(accounts[0]);
+        }
       })
       .catch((e) => console.error(e));
   };

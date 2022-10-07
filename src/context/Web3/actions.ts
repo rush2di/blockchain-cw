@@ -1,13 +1,7 @@
 import { ethers } from "ethers";
 import { initWeb3Response } from "services/ethers";
+import { web3ProviderActions } from "./constants";
 import { Web3AppContextProps } from "./types";
-
-export const web3ProviderActions = {
-  DETECT_WALLET: "DETECT_WALLET",
-  CONNECT_WALLET: "CONNECT_WALLET",
-  DISCONNECT_WALLET: "DISCONNECT_WALLET",
-  ACCOUNT_STATE_CHANGED: "ACCOUNT_STATE_CHANGED",
-}
 
 const onDetectWallet = (payload: Web3AppContextProps["mmInstalled"]) => {
   return {
@@ -32,7 +26,9 @@ const onDisconnectWallet = (payload: Web3AppContextProps["currentAccount"]) => {
   };
 };
 
-const onAccountStateChanged = (payload: Web3AppContextProps["currentAccount"]) => {
+const onAccountStateChanged = (
+  payload: Web3AppContextProps["currentAccount"]
+) => {
   return {
     type: web3ProviderActions.ACCOUNT_STATE_CHANGED,
     payload,

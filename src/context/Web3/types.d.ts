@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { ReactNode } from "react";
 import { initWeb3Response } from "services/ethers";
 
 export interface Web3AppContextProps
@@ -15,7 +16,7 @@ export interface Web3AppProviderProps {
   children: ReactNode;
 }
 
-export interface Web3ReducerActionsType {
-  type: string;
-  payload: any;
+export interface IStorageParams {
+  account: string | null;
+  isApproved: boolean;
 }

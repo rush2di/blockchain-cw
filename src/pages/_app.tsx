@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 
 import "styles/globals.css";
-import Web3AppProvider from "context/Web3App";
+import Web3AppProvider from "context/Web3";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

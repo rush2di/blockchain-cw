@@ -1,5 +1,6 @@
-import { web3ProviderActions } from "./actions";
-import { Web3AppContextProps, Web3ReducerActionsType } from "./types";
+import { IReducerAction } from "shared/types";
+import { web3ProviderActions } from "./constants";
+import { Web3AppContextProps } from "./types";
 
 export const web3InitState = {
   provider: null,
@@ -15,7 +16,7 @@ export const web3InitState = {
 
 export const web3Reducer = (
   state: Web3AppContextProps = web3InitState,
-  actions: Web3ReducerActionsType
+  actions: IReducerAction
 ) => {
   switch (actions.type) {
     case web3ProviderActions.CONNECT_WALLET:

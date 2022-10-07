@@ -1,54 +1,21 @@
 import Image from "next/image";
 import { Fragment, useState } from "react";
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox, Transition, Tab } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 import {
-  MOCKBUSD_ADDRESS,
-  MOCKBUSD_DECIMALS,
-  MOCKUSDC_ADDRESS,
-  MOCKUSDC_DECIMALS,
-  MOCKUSDT_ADDRESS,
-  MOCKUSDT_DECIMALS,
-} from "shared/constants";
+  TicketProgressBarProps,
+  TicketButtonsProps,
+  TicketProps,
+} from "./types";
+import { _tokens } from "./constants";
 import {
-  progressPercent,
   tokenImageTransformer,
   toUSDCurrencyString,
+  progressPercent,
 } from "./utils";
 
-interface TicketProps extends TicketProgressBarProps, TicketButtonsProps {
-  title: string;
-  cover: `https://source.unsplash.com/${string}`;
-  content: TicketContentProps;
-}
-
-interface TicketButtonsProps {
-  disabled: boolean;
-  handleClick: (tokenAddress: string, decimals: number) => void;
-}
-
-export interface TicketContentProps {
-  intro: string;
-  heading: string;
-  winOutcome: string;
-  loseOutcome: string;
-  entryPrice: number;
-  prevPrice: number;
-}
-
-interface TicketProgressBarProps {
-  minimumPlayers: number;
-  currentPlayers: number;
-}
-
-const _tokens = [
-  { name: "BUSD", address: MOCKBUSD_ADDRESS, decimals: MOCKBUSD_DECIMALS },
-  { name: "USDT", address: MOCKUSDT_ADDRESS, decimals: MOCKUSDT_DECIMALS },
-  { name: "USDC", address: MOCKUSDC_ADDRESS, decimals: MOCKUSDC_DECIMALS },
-];
-
-const Ticket = ({
+const GameTicket = ({
   title,
   cover,
   content,
@@ -58,7 +25,7 @@ const Ticket = ({
   handleClick,
 }: TicketProps) => {
   return (
-    <div className="w-full bg-shades-1 border-shades-3 rounded-lg ">
+    <Tab.Panel className="w-full bg-shades-1 border-shades-3 rounded-lg ">
       <div className="flex flex-col md:flex-row items-center">
         <div className="min-h-[320px] w-full md:w-[370px] md:self-stretch flex items-center justify-center relative after:overlay overflow-hidden rounded-t-lg md:rounded-l-lg md:rounded-tr-none">
           <Image src={cover} layout="fill" objectFit="cover" />
@@ -120,7 +87,7 @@ const Ticket = ({
           </div>
         </div>
       </div>
-    </div>
+    </Tab.Panel>
   );
 };
 
@@ -147,7 +114,7 @@ const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
         disabled={disabled}
         onClick={() => handleClick(selected.address, selected.decimals)}
         className={`btn--rounded w-full md:w-1/2 ${
-          disabled ? "btn" : "btn--light"
+          disabled ? "btn" : "btn btn--light"
         }`}
       >
         Play Now
@@ -228,4 +195,4 @@ const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
   );
 };
 
-export default Ticket;
+export default GameTicket;

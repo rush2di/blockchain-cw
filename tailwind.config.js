@@ -131,6 +131,7 @@ module.exports = {
     container: false,
   },
   plugins: [
+    require("@headlessui/tailwindcss"),
     require("tailwind-bootstrap-grid")({
       containerMaxWidths: _custom_screens,
       gridGutters: { 1: "1.5rem" },
