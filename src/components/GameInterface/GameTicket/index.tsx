@@ -20,8 +20,8 @@ const GameTicket = ({
   cover,
   content,
   disabled,
-  minimumPlayers,
-  currentPlayers,
+  minParticipants,
+  currParticipants,
   handleClick,
 }: TicketProps) => {
   return (
@@ -63,7 +63,7 @@ const GameTicket = ({
                 Minimum Participants
               </span>
               <span className="text-shades-8 mb-0-5 block text-md">
-                ≥ {minimumPlayers}
+                ≥ {minParticipants}
               </span>
             </div>
             <div className="v-seperator" />
@@ -72,14 +72,14 @@ const GameTicket = ({
                 Current Participants
               </span>
               <span className="text-shades-8 mb-0-5 block text-md">
-                ~ {currentPlayers}
+                ~ {currParticipants}
               </span>
             </div>
           </div>
           <div className="py-0-75">
             <TicketProgressBar
-              minimumPlayers={minimumPlayers}
-              currentPlayers={currentPlayers}
+              minParticipants={minParticipants}
+              currParticipants={currParticipants}
             />
           </div>
           <div className="pt-0-75 flex flex-col-reverse md:flex-row items-stretch">
@@ -92,13 +92,13 @@ const GameTicket = ({
 };
 
 const TicketProgressBar = ({
-  minimumPlayers,
-  currentPlayers,
+  minParticipants,
+  currParticipants,
 }: TicketProgressBarProps) => {
   return (
     <div className="w-full h-0-5 bg-shades-3 rounded">
       <div
-        style={{ width: `${progressPercent(minimumPlayers, currentPlayers)}%` }}
+        style={{ width: `${progressPercent(minParticipants, currParticipants)}%` }}
         className="h-0-5 bg-amber-500 rounded"
       />
     </div>
@@ -122,7 +122,7 @@ const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
       <div className="block self-stretch w-full mb-1 md:mb-0 md:w-1/2 md:ml-1">
         <Listbox value={selected} onChange={setSelected}>
           <div className="relative w-full h-full">
-            <Listbox.Button className="relative h-full w-full cursor-default btn btn--dark btn--rounded pl-1 pr-2-75 text-left font-bold">
+            <Listbox.Button className="cursor-pointer relative h-full w-full btn btn--dark btn--rounded pl-1 pr-2-75 text-left font-bold">
               <div className="flex truncate text-shades-9 items-center">
                 <span className="text-sm font-normal">pay with </span>
                 <span className="ml-0-45">{selected.name}</span>
@@ -151,7 +151,7 @@ const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
                   <Listbox.Option
                     key={tokenIdx}
                     className={({ active }) =>
-                      `relative cursor-default select-none py-1 px-1-25 mx-1 rounded ${
+                      `relative select-none py-1 px-1-25 mx-1 rounded cursor-pointer ${
                         active ? "bg-amber-100 text-amber-900" : "text-shades-9"
                       }`
                     }

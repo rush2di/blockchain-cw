@@ -8,73 +8,73 @@ import GameTicket from "./GameTicket";
 import {
   approvePayment,
   feeFromParticipationsCount,
+  getAccBalances,
+  payFeeAndParticipate,
   tokenContractFromAddress,
 } from "./utils";
 import { _GameticketContent } from "./constants";
 import { TICKET_PRICE } from "shared/constants";
 import { Web3AppContext } from "context/Web3";
+import { GameContext } from "context/Game";
 
 const GameInterface = () => {
-  const { currentAccount, contracts } = useContext(Web3AppContext);
+  const { provider, currAccount, contracts } = useContext(Web3AppContext);
+  const {
+    gameID,
+    currParticipants,
+    minParticipants,
+    playerParticipations,
+    handleUserGameUpdates,
+  } = useContext(GameContext);
 
-  const handleClick = async (tokenAddress: string, decimals: number) => {
+  const participate = async (tokenAddr: string, decimals: number) => {
+    const tokenContract = tokenContractFromAddress(tokenAddr, contracts);
     const ticketPrice = ethers.utils.parseUnits(TICKET_PRICE, decimals);
-    const tokenContract = tokenContractFromAddress(tokenAddress, contracts);
-
-    const participations = await contracts.chainPrizes!.playersParticipations(
-      currentAccount
+    const currFeePrice = feeFromParticipationsCount(playerParticipations);
+    const { accBalanceBNB, accBalanceToken } = await getAccBalances(
+      provider!,
+      tokenContract,
+      currAccount!,
+      decimals
     );
-    const formatEtherParticipations = ethers.utils.formatEther(participations);
-    const feePrice = feeFromParticipationsCount(formatEtherParticipations);
+
+    if (!accBalanceBNB || !accBalanceToken) return;
 
     const isApproved = await approvePayment(tokenContract, ticketPrice);
 
     if (isApproved) {
-      console.log("is Approved ?", tokenAddress, ticketPrice, {
-        value: feePrice,
-      });
-      const options = { value: feePrice };
-      await contracts.chainPrizes!.participate(
-        tokenAddress,
+      const gameUpdated = await payFeeAndParticipate(
+        tokenAddr,
+        currAccount!,
+        gameID,
+        contracts.chainPrizes!,
         ticketPrice,
-        options
+        currFeePrice
       );
-
-      const newParticipations =
-        await contracts.chainPrizes!.playersParticipations(currentAccount);
-      const newPlayers = await contracts.chainPrizes!.players(0);
-
-      console.log("new participations", newParticipations);
-      console.log("new players", newPlayers, {
-        newPlayers: {
-          gameID: newPlayers[3],
-          participations: newPlayers[4],
-          player: newPlayers[5],
-        },
-      });
-      console.log("new players", newPlayers, {
-        newPlayers: {
-          gameID: newPlayers[0].toNumber(),
-          participations: newPlayers[2].toNumber(),
-          player: newPlayers[1],
-        },
-      });
+      handleUserGameUpdates!(
+        gameUpdated.playerParticipations,
+        gameUpdated.currParticipants
+      );
     }
+  };
+
+  const handleClick = (tokenAddr: string, decimals: number) => {
+    participate(tokenAddr, decimals).catch((err) => console.log(err));
   };
 
   return (
     <Tab.Group defaultIndex={1}>
       <GameNav />
-      <Tab.Panels>
+      <Tab.Panels className="mt-1-75">
         <Tab.Panel>Content 1</Tab.Panel>
         <GameTicket
           title={`1$ Game \nTicket`}
           cover={"https://source.unsplash.com/yJpjLD3c9bU"}
           content={_GameticketContent}
-          disabled={!currentAccount}
+          disabled={!currAccount}
           handleClick={handleClick}
-          minimumPlayers={10000}
-          currentPlayers={1762}
+          minParticipants={minParticipants}
+          currParticipants={currParticipants}
         />
       </Tab.Panels>
     </Tab.Group>

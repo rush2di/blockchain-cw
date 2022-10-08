@@ -1,11 +1,19 @@
 import { ReactNode } from "react";
 
 export interface IGameState {
+  gameID: number;
   minParticipants: number;
   currParticipants: number;
   playerParticipations: number;
   playerRefunds: Array<number> | null;
-  playerWins: number;
+  playerIsWinner: boolean;
+}
+
+export interface IGameVals extends IGameState {
+  handleUserGameUpdates?(
+    playerParticipations: number,
+    currParticipants: number
+  ): void;
 }
 
 export interface IGameContextProviderProps {
@@ -15,4 +23,8 @@ export interface IGameContextProviderProps {
 export interface IOnDetectUserActionPayload
   extends IGameState["playerParticipations"],
     IGameState["playerRefunds"],
-    IGameState["playerWins"] {}
+    IGameState["playerIsWinner"] {}
+
+export interface IOnGameStateLoadedActionPayload
+  extends IGameState["currParticipants"],
+    IGameState["gameID"] {}

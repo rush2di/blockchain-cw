@@ -6,7 +6,7 @@ export interface TicketProps extends TicketProgressBarProps, TicketButtonsProps 
 
 export interface TicketButtonsProps {
   disabled: boolean;
-  handleClick: (tokenAddress: string, decimals: number) => void;
+  handleClick: (tokenAddr: string, decimals: number) => void;
 }
 
 export interface TicketContentProps {
@@ -19,6 +19,6 @@ export interface TicketContentProps {
 }
 
 export interface TicketProgressBarProps {
-  minimumPlayers: number;
-  currentPlayers: number;
+  minParticipants: number;
+  currParticipants: number;
 }

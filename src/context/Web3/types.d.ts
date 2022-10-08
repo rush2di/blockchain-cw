@@ -1,18 +1,15 @@
-import { ethers } from "ethers";
 import { ReactNode } from "react";
-import { initWeb3Response } from "services/ethers";
+import { Contract, providers } from "ethers";
+import { IWeb3Response } from "services/ethers";
 
-export interface Web3AppContextProps
-  extends initWeb3Response<
-    ethers.providers.Web3Provider | null,
-    ethers.Contract | null
-  > {
+export interface IWeb3AppContextProps
+  extends IWeb3Response<providers.Web3Provider | null, Contract | null> {
   mmInstalled: boolean | null;
-  currentAccount: string | null;
+  currAccount: string | null;
   connectAccount?(account: string | null): void;
 }
 
-export interface Web3AppProviderProps {
+export interface IWeb3AppProviderProps {
   children: ReactNode;
 }
 

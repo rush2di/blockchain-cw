@@ -1,10 +1,11 @@
-import { DAPP_STORAGE_KEY } from "shared/constants";
+import { DAPP_STORAGE_KEY, isBrowser } from "shared/constants";
 import { IStorageParams } from "./types";
 
 export const setSessionStorageNewAcc = ({
   account,
   isApproved,
 }: IStorageParams) => {
+  if (!isBrowser) return;
   const newData = { account, isApproved };
   sessionStorage.setItem(DAPP_STORAGE_KEY, JSON.stringify(newData));
 };

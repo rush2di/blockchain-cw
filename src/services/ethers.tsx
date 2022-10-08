@@ -12,20 +12,20 @@ import {
   MOCKUSDC_ADDRESS,
 } from "shared/constants";
 
-export interface dappContractsProps<T> {
+export interface IDappContractsProps<T> {
   chainPrizes: T;
   mockBUSD: T;
   mockUSDT: T;
   mockUSDC: T;
 }
 
-export interface initWeb3Response<T1, T2> {
+export interface IWeb3Response<T1, T2> {
   provider: T1;
-  contracts: dappContractsProps<T2>;
+  contracts: IDappContractsProps<T2>;
 }
 
 const initWeb3 = async (): Promise<
-  initWeb3Response<ethers.providers.Web3Provider | null, ethers.Contract | null>
+  IWeb3Response<ethers.providers.Web3Provider | null, ethers.Contract | null>
 > => {
   if (window.ethereum) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);

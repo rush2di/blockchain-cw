@@ -1,8 +1,8 @@
 import { ReactNode, useContext } from "react";
 
 import MetamaskAlert from "components/MetamaskAlert";
-import Footer from "components/Footer";
-import Navbar from "components/Navbar";
+import Footer from "components/Layout/Footer";
+import Navbar from "components/Layout/Navbar";
 import { Web3AppContext } from "context/Web3";
 
 interface LayoutProps {
@@ -10,11 +10,11 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { provider, mmInstalled, currentAccount, connectAccount } =
+  const { provider, mmInstalled, currAccount, connectAccount } =
     useContext(Web3AppContext);
 
   const handleConnect = () => {
-    if (!provider || !!currentAccount) return;
+    if (!provider || !!currAccount) return;
 
     provider
       .send("eth_requestAccounts", [])
@@ -28,7 +28,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <>
-      <Navbar currentAccount={currentAccount} handleConnect={handleConnect} />
+      <Navbar currAccount={currAccount} handleConnect={handleConnect} />
       <main className="min-h-screen bg-pattern bg-cover bg-left-top">
         {mmInstalled === false && <MetamaskAlert />}
         {children}

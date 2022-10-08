@@ -4,11 +4,11 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { _APP_NAME } from "shared/constants";
 
 interface NavbarProps {
-  currentAccount: string | null;
+  currAccount: string | null;
   handleConnect(): void;
 }
 
-const Navbar = ({ currentAccount, handleConnect }: NavbarProps) => {
+const Navbar = ({ currAccount, handleConnect }: NavbarProps) => {
   return (
     <nav className="bg-shades-1 w-full border-b border-shades-3">
       <div className="container">
@@ -24,10 +24,10 @@ const Navbar = ({ currentAccount, handleConnect }: NavbarProps) => {
               onClick={handleConnect}
               className="btn btn--light btn--rounded btn--flex-center"
             >
-              {currentAccount === null
+              {currAccount === null
                 ? "Connect MetaMask"
                 : "Connected"}
-              {currentAccount !== null && <ConnectionBadge />}
+              {currAccount !== null && <ConnectionBadge />}
             </button>
           </div>
         </div>

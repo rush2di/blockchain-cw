@@ -1,11 +1,11 @@
 import { IReducerAction } from "shared/types";
 import { web3ProviderActions } from "./constants";
-import { Web3AppContextProps } from "./types";
+import { IWeb3AppContextProps } from "./types";
 
 export const web3InitState = {
   provider: null,
   mmInstalled: null,
-  currentAccount: null,
+  currAccount: null,
   contracts: {
     chainPrizes: null,
     mockBUSD: null,
@@ -15,7 +15,7 @@ export const web3InitState = {
 };
 
 export const web3Reducer = (
-  state: Web3AppContextProps = web3InitState,
+  state: IWeb3AppContextProps = web3InitState,
   actions: IReducerAction
 ) => {
   switch (actions.type) {
@@ -28,7 +28,7 @@ export const web3Reducer = (
     case web3ProviderActions.DETECT_WALLET:
       return { ...state, mmInstalled: actions.payload };
     case web3ProviderActions.ACCOUNT_STATE_CHANGED:
-      return { ...state, currentAccount: actions.payload };
+      return { ...state, currAccount: actions.payload };
     default:
       return state;
   }

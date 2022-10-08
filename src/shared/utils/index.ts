@@ -1,10 +1,20 @@
+import { isBrowser } from "shared/constants";
+
 const classNames = (...classes: string[]): string => {
   return classes.filter(Boolean).join(" ");
 };
 
-export const getSessionStorageData = (key: string) => {
+const getSessionStorageData = (key: string) => {
+  if (!isBrowser) return;
+
   const json = sessionStorage.getItem(key);
   return JSON.parse(json as string);
 };
 
-export { classNames };
+const removeSessionStorageData = (key: string) => {
+  if (!isBrowser) return;
+
+  sessionStorage.removeItem(key);
+};
+
+export { classNames, getSessionStorageData, removeSessionStorageData };

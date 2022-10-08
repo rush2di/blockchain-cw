@@ -1,5 +1,5 @@
-import { BigNumber, Contract, ethers } from "ethers";
-import { dappContractsProps } from "services/ethers";
+import { BigNumber, Contract, ethers, providers } from "ethers";
+import { IDappContractsProps } from "services/ethers";
 import {
   CHAINPRIZES_ADDRESS,
   GAME_FEE_1,
@@ -9,7 +9,7 @@ import {
 
 const tokenContractFromAddress = (
   address: string,
-  contracts: dappContractsProps<any>
+  contracts: IDappContractsProps<any>
 ) => {
   switch (address) {
     case "BUSD":
@@ -36,15 +36,60 @@ const approvePayment = async (tokenContract: Contract, amount: BigNumber) => {
   }
 };
 
-const feeFromParticipationsCount = (playerParticipations: string) => {
+const feeFromParticipationsCount = (playerParticipations: number) => {
   switch (playerParticipations) {
-    case "0.0":
+    case 0:
       return ethers.utils.parseEther(GAME_FEE_1);
-    case "1.0":
+    case 1:
       return ethers.utils.parseEther(GAME_FEE_2);
     default:
       return ethers.utils.parseEther(GAME_FEE_3);
   }
 };
 
-export { tokenContractFromAddress, feeFromParticipationsCount, approvePayment };
+const getAccBalances = async (
+  provider: providers.Web3Provider,
+  tokenContract: Contract,
+  currAccount: string,
+  decimals: number
+) => {
+  const accBalanceBNB = await provider.getBalance(currAccount);
+  const accBalanceToken = await tokenContract.balanceOf(currAccount);
+
+  return {
+    accBalanceBNB: ethers.utils.formatEther(accBalanceBNB),
+    accBalanceToken: ethers.utils.formatUnits(accBalanceToken, decimals),
+  };
+};
+
+const payFeeAndParticipate = async (
+  tokenAddr: string,
+  currAccount: string,
+  currGameID: number,
+  gameContract: Contract,
+  ticketPrice: BigNumber,
+  currFeePrice: BigNumber
+) => {
+  const options = { value: currFeePrice };
+  const txParticipation = await gameContract.participate(
+    tokenAddr,
+    ticketPrice,
+    options
+  );
+  await txParticipation.wait();
+  const currAccPlays = await gameContract.playersParticipations(currAccount);
+  const currPlays = await gameContract.gameIdParticipations(currGameID);
+
+  return {
+    currParticipants: currPlays.toNumber(),
+    playerParticipations: currAccPlays.toNumber(),
+  };
+};
+
+export {
+  payFeeAndParticipate,
+  tokenContractFromAddress,
+  feeFromParticipationsCount,
+  approvePayment,
+  getAccBalances,
+};
