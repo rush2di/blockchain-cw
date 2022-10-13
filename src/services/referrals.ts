@@ -51,11 +51,12 @@ async function getAllConnects() {
 
 async function getConnectByAddress(addr: string) {
   try {
-    await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         addr: addr,
       },
     });
+    return user;
   } catch (err) {
     console.log(err);
   }
