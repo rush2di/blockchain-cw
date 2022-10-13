@@ -1,6 +1,7 @@
 /// ========= Modules declations ==========
 
 declare module "uuid";
+declare module "shortid";
 
 /// ========= Provider fix ===========
 
