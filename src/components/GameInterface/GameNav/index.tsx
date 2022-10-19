@@ -11,7 +11,7 @@ const GameNav = () => {
             "ui-selected:btn--prim ui-not-selected:btn--dark"
           )}
         >
-          My Subscribtion
+          My Dashboard
         </Tab>
         <hr className="v-seperator mx-1" />
         <Tab

@@ -2,7 +2,7 @@ import { Web3AppContext } from "context/Web3";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { onDetectUser, onGameStateLoaded, onUserParticipated } from "./actions";
 import { gameReducer, initState } from "./reducers";
-import { IGameContextProviderProps, IGameState, IGameVals } from "./types";
+import { IGameContextProviderProps, IGameVals } from "./types";
 import { getAccGameState, getGameState } from "./utils";
 
 export const GameContext = createContext<IGameVals>({ ...initState });
@@ -21,11 +21,12 @@ const GameContextProvider = ({ children }: IGameContextProviderProps) => {
   useEffect(() => {
     if (currAccount !== null) {
       getGameState(contracts.chainPrizes!)
-        .then(({ currGameID, currParticipants }) => {
+        .then(({ currGameID, currParticipants, connectsHistory }) => {
           dispatch(
             onGameStateLoaded({
               currParticipants: currParticipants,
               gameID: currGameID,
+              connectsHistory,
             })
           );
         })

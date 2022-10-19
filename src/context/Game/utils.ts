@@ -1,11 +1,14 @@
+import axios from "axios";
 import { Contract } from "ethers";
 
 const getGameState = async (contract: Contract) => {
   const currGameID = await contract.gameId();
   const currParticipants = await contract.gameIdParticipations(currGameID);
+  const connectsHistory = (await axios.get("/api/connects")).data;
   return {
     currGameID: currGameID.toNumber(),
     currParticipants: currParticipants.toNumber(),
+    connectsHistory,
   };
 };
 

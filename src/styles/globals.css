@@ -19,7 +19,7 @@
 
 @layer components {
   .btn {
-    @apply px-1-5 py-0-5 border border-shades-5 bg-shades-7 text-shades-5 font-bold w-full focus:outline-none focus:ring-2 focus:ring-shades-5 focus:ring-offset-2 focus:ring-offset-shades-4 ring-opacity-20;
+    @apply px-1-5 py-0-5 border border-shades-5 bg-shades-7 text-shades-5 font-bold w-full focus:outline-none focus:ring-2 focus:ring-shades-5 focus:ring-offset-2 focus:ring-offset-shades-4 ring-opacity-20 cursor-pointer;
   }
   .btn--light {
     @apply border-shades-7 bg-shades-10 text-shades-1 font-bold hover:bg-shades-8 hover:border-shades-6 focus:outline-none focus:ring-2 focus:ring-shades-4 focus:ring-offset-2 focus:ring-offset-shades-3 ring-opacity-20;
@@ -33,11 +33,17 @@
   .btn--flex-center {
     @apply flex items-center justify-center;
   }
+  .btn--sm {
+    @apply px-1 py-0-25;
+  }
   .btn--flex-between {
     @apply flex items-center justify-between;
   }
   .btn--rounded {
     @apply rounded-lg;
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed;
   }
   .v-seperator {
     @apply w-[1px] h-full min-h-[30px] bg-shades-3 rounded border-none;

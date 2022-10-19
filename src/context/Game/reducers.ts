@@ -4,6 +4,7 @@ import { IGameState } from "./types";
 
 export const initState = {
   gameID: 0,
+  connectsHistory: [],
   minParticipants: 100000,
   currParticipants: 0,
   playerParticipations: 0,
@@ -26,6 +27,7 @@ export const gameReducer = (
     case GAME_ACTION_TYPES.LOADED_DATA:
       return {
         ...state,
+        connectsHistory: actions.payload.connectsHistory,
         currParticipants: actions.payload.currParticipants,
         gameID: actions.payload.gameID,
       };

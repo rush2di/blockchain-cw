@@ -1,5 +1,7 @@
+import { toast } from "react-toastify";
 import { BigNumber, Contract, ethers, providers } from "ethers";
 import { IDappContractsProps } from "services/ethers";
+
 import {
   CHAINPRIZES_ADDRESS,
   GAME_FEE_1,
@@ -86,10 +88,20 @@ const payFeeAndParticipate = async (
   };
 };
 
+const copyToClipboard = (str: string) => {
+  if (!navigator.clipboard) {
+    toast.error("Something went wrong");
+    return;
+  }
+  navigator.clipboard.writeText(str);
+  toast.success("Copied succesfuly");
+};
+
 export {
   payFeeAndParticipate,
   tokenContractFromAddress,
   feeFromParticipationsCount,
   approvePayment,
   getAccBalances,
+  copyToClipboard,
 };

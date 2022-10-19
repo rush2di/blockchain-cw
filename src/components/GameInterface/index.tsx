@@ -4,9 +4,11 @@ import { Tab } from "@headlessui/react";
 
 import GameNav from "./GameNav";
 import GameTicket from "./GameTicket";
+import GameDashboard from "./GameDashboard";
 
 import {
   approvePayment,
+  copyToClipboard,
   feeFromParticipationsCount,
   getAccBalances,
   payFeeAndParticipate,
@@ -58,21 +60,28 @@ const GameInterface = () => {
     }
   };
 
-  const handleClick = (tokenAddr: string, decimals: number) => {
+  const handleParticipate = (tokenAddr: string, decimals: number) => {
     participate(tokenAddr, decimals).catch((err) => console.log(err));
+  };
+
+  const handleCopyToClipboard = (str: string) => {
+    copyToClipboard(str);
   };
 
   return (
     <Tab.Group defaultIndex={1}>
       <GameNav />
       <Tab.Panels className="mt-1-75">
-        <Tab.Panel>Content 1</Tab.Panel>
+        <GameDashboard
+          currAccount={currAccount}
+          handleCopyToClipboard={handleCopyToClipboard}
+        />
         <GameTicket
           title={`1$ Game \nTicket`}
           cover={"https://source.unsplash.com/yJpjLD3c9bU"}
           content={_GameticketContent}
           disabled={!currAccount}
-          handleClick={handleClick}
+          handleClick={handleParticipate}
           minParticipants={minParticipants}
           currParticipants={currParticipants}
         />
