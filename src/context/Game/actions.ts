@@ -1,8 +1,16 @@
 import {
   IOnDetectUserActionPayload,
+  IOnFirstLoadActionPayload,
   IOnGameStateLoadedActionPayload,
 } from "./types";
 import { GAME_ACTION_TYPES } from "./constants";
+
+const onFirstLoad = (payload: IOnFirstLoadActionPayload) => {
+  return {
+    type: GAME_ACTION_TYPES.FIRST_LOAD,
+    payload,
+  };
+};
 
 const onGameStateLoaded = (payload: IOnGameStateLoadedActionPayload) => {
   return {
@@ -25,4 +33,4 @@ const onUserParticipated = (payload: any) => {
   };
 };
 
-export { onGameStateLoaded, onDetectUser, onUserParticipated };
+export { onFirstLoad, onGameStateLoaded, onDetectUser, onUserParticipated };

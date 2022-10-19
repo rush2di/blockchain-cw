@@ -5,8 +5,8 @@ import MetamaskAlert from "components/MetamaskAlert";
 import Footer from "components/Layout/Footer";
 import Navbar from "components/Layout/Navbar";
 import { Web3AppContext } from "context/Web3";
-import { GameContext } from "context/Game";
 import { hasConnectsHistory } from "./utils";
+import { GameContext } from "context/Game";
 import { useRouter } from "next/router";
 
 interface LayoutProps {

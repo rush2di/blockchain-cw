@@ -3,17 +3,16 @@ import {
   ExclamationTriangleIcon,
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
+import { GameContext } from "context/Game";
+import { useContext } from "react";
+import { HOST_NAME } from "shared/constants";
 import { classNames } from "shared/utils";
-
-interface IGameDashboard {
-  currAccount: string | null;
-  handleCopyToClipboard(str: string): void;
-}
+import { IGameDashboardProps, IGameDashboardBodyItemProps } from "./types";
 
 const GameDashboard = ({
   currAccount,
   handleCopyToClipboard,
-}: IGameDashboard) => {
+}: IGameDashboardProps) => {
   return (
     <Tab.Panel
       className={classNames(
@@ -37,7 +36,10 @@ const GameDashboard = ({
 const GameDashboardBody = ({
   currAccount,
   handleCopyToClipboard,
-}: IGameDashboard) => {
+}: IGameDashboardProps) => {
+  const { playerParticipations, playerRefunds, playerData } =
+    useContext(GameContext);
+
   return (
     <div className="flex w-full items-center justify-center">
       <div className="row w-full">
@@ -53,7 +55,7 @@ const GameDashboardBody = ({
             <div className="mb-1">
               <GameDashboardBodyItem
                 title="Your Referral Link"
-                value="https://www.chainprizes.com/?q=REFCODEHERE"
+                value={`${HOST_NAME}?ref=${playerData!.referral_code}`}
                 handleCopyToClipboard={handleCopyToClipboard}
               />
             </div>
@@ -67,8 +69,13 @@ const GameDashboardBody = ({
               </h3>
               <div
                 className={classNames(
-                  "flex bg-black rounded border",
-                  "overflow-hidden border-shades-2 w-[220px]"
+                  "flex bg-black rounded border border-l-4",
+                  "overflow-hidden border-shades-2 w-fit",
+                  `${
+                    playerData!.referred > 0
+                      ? "border-l-green-500"
+                      : "border-l-red-500"
+                  }`
                 )}
               >
                 <span
@@ -77,12 +84,12 @@ const GameDashboardBody = ({
                     "pointer-events-none px-1"
                   )}
                 >
-                  0
+                  {playerData!.referred}
                 </span>
                 <div
                   className={classNames(
                     "px-1 py-0-5 flex items-center w-full",
-                    "bg-red-700 border border-red-800"
+                    "border-l border-shades-2"
                   )}
                 >
                   <span className="block text-shades-9 text-md mb-0">
@@ -108,7 +115,7 @@ const GameDashboardBody = ({
                     "leading-none text-shades-8"
                   )}
                 >
-                  0
+                  {playerParticipations}
                 </span>
                 <span className="block text-md ml-1 mb-1-75">
                   / current game participations
@@ -132,7 +139,7 @@ const GameDashboardBody = ({
                         Available refunds amount
                       </td>
                       <td className="p-0-75 lg:p-1 border-b border-shades-2">
-                        0
+                        {playerRefunds}
                       </td>
                       <td className="p-0-75 lg:p-1 border-b border-shades-2">
                         <button disabled className="btn btn--sm btn--muted">
@@ -187,17 +194,11 @@ const GameDashboardNotice = () => {
   );
 };
 
-interface IGameDashboardBodyItem {
-  title: string;
-  value: string;
-  handleCopyToClipboard(str: string): void;
-}
-
 const GameDashboardBodyItem = ({
   title,
   value,
   handleCopyToClipboard,
-}: IGameDashboardBodyItem) => {
+}: IGameDashboardBodyItemProps) => {
   return (
     <div>
       <h3 className="font-semibold text-lg mb-0-5 ml-0-45">{title}</h3>
@@ -211,7 +212,7 @@ const GameDashboardBodyItem = ({
         <span
           className={classNames(
             "block text-md text-shades-7 pointer-events-none",
-            "whitespace-nowrap text-ellipsis"
+            "whitespace-nowrap text-ellipsis overflow-hidden"
           )}
         >
           {value}

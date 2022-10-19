@@ -8,6 +8,9 @@ import {
   GAME_FEE_2,
   GAME_FEE_3,
 } from "shared/constants";
+import { User } from "@prisma/client";
+import { IGABFunctParams, IPPFuncParams, ISCUFuncParams } from "./type";
+import axios from "axios";
 
 const tokenContractFromAddress = (
   address: string,
@@ -38,7 +41,7 @@ const approvePayment = async (tokenContract: Contract, amount: BigNumber) => {
   }
 };
 
-const feeFromParticipationsCount = (playerParticipations: number) => {
+const participationsToFee = (playerParticipations: number) => {
   switch (playerParticipations) {
     case 0:
       return ethers.utils.parseEther(GAME_FEE_1);
@@ -49,42 +52,68 @@ const feeFromParticipationsCount = (playerParticipations: number) => {
   }
 };
 
-const getAccBalances = async (
-  provider: providers.Web3Provider,
-  tokenContract: Contract,
-  currAccount: string,
-  decimals: number
-) => {
+const hasFeeDiscount = (player: User | any) => {
+  const playerReferralsCount = player.referred;
+  const playerFeeFixtures = player.fee_fixed;
+
+  if (playerReferralsCount === 0) return false;
+  if (playerReferralsCount > playerFeeFixtures) return true;
+};
+
+const getAccBalances = async ({
+  provider,
+  currAccount,
+  tokenContract,
+  tokenDecimals,
+}: IGABFunctParams) => {
   const accBalanceBNB = await provider.getBalance(currAccount);
   const accBalanceToken = await tokenContract.balanceOf(currAccount);
 
   return {
     accBalanceBNB: ethers.utils.formatEther(accBalanceBNB),
-    accBalanceToken: ethers.utils.formatUnits(accBalanceToken, decimals),
+    accBalanceToken: ethers.utils.formatUnits(accBalanceToken, tokenDecimals),
   };
 };
 
-const payFeeAndParticipate = async (
-  tokenAddr: string,
-  currAccount: string,
-  currGameID: number,
-  gameContract: Contract,
-  ticketPrice: BigNumber,
-  currFeePrice: BigNumber
-) => {
-  const options = { value: currFeePrice };
+const playerParticipate = async ({
+  gameContract,
+  tokenAddress,
+  currFeePrice,
+  ticketPrice,
+  player,
+}: IPPFuncParams) => {
+  const options = {
+    value: hasFeeDiscount(player)
+      ? ethers.utils.parseEther(GAME_FEE_1)
+      : currFeePrice,
+  };
   const txParticipation = await gameContract.participate(
-    tokenAddr,
+    tokenAddress,
     ticketPrice,
     options
   );
-  await txParticipation.wait();
-  const currAccPlays = await gameContract.playersParticipations(currAccount);
+
+  await txParticipation.wait(); // waits until tx is mined
+};
+
+const syncChainUpdates = async ({
+  gameContract,
+  currGameID,
+  player,
+}: ISCUFuncParams) => {
+  const reqBody = {
+    addr: player.addr,
+  };
+  const currAccPlays = await gameContract.playersParticipations(player.addr);
   const currPlays = await gameContract.gameIdParticipations(currGameID);
+  const currPlayer = hasFeeDiscount(player)
+    ? (await axios.put(`/api/connects/${player.addr}/bonus`, reqBody)).data
+    : player;
 
   return {
     currParticipants: currPlays.toNumber(),
     playerParticipations: currAccPlays.toNumber(),
+    playerData: currPlayer,
   };
 };
 
@@ -98,10 +127,12 @@ const copyToClipboard = (str: string) => {
 };
 
 export {
-  payFeeAndParticipate,
+  playerParticipate,
   tokenContractFromAddress,
-  feeFromParticipationsCount,
+  participationsToFee,
   approvePayment,
   getAccBalances,
   copyToClipboard,
+  hasFeeDiscount,
+  syncChainUpdates,
 };

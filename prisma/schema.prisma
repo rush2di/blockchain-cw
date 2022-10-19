@@ -12,7 +12,8 @@ model User {
   addr          String   @unique
   referrer_code String
   referral_code String   @unique
-  referred      Int
+  referred      Int      @default(0)
+  fee_fixed     Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

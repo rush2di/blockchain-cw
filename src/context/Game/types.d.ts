@@ -9,12 +9,14 @@ export interface IGameState {
   playerParticipations: number;
   playerRefunds: Array<number> | null;
   playerIsWinner: boolean;
+  playerData: User | null;
 }
 
 export interface IGameVals extends IGameState {
   handleUserGameUpdates?(
     playerParticipations: number,
-    currParticipants: number
+    currParticipants: number,
+    playerData: User,
   ): void;
 }
 
@@ -30,3 +32,6 @@ export interface IOnDetectUserActionPayload
 export interface IOnGameStateLoadedActionPayload
   extends IGameState["currParticipants"],
     IGameState["gameID"] {}
+
+export interface IOnFirstLoadActionPayload
+  extends IGameState["connectsHistory"] {}

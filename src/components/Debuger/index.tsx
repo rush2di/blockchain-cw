@@ -18,7 +18,7 @@ const Debuger = () => {
   };
 
   return (
-    <div className="fixed p-1 top-0 right-0 bg-black rounded shadow-md text-shades-10">
+    <div className="fixed p-1 bg-black rounded shadow-md text-shades-10 left-0 bottom-0 z-50">
       <button onClick={handleClick} className="btn btn--light">
         Fill accounts
       </button>

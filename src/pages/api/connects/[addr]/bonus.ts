@@ -1,15 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { postNewConnect } from "services/referrals";
+import { getConnectByAddress, incFeeCount } from "services/referrals";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { addr, referrer_code } = req.body;
+  const { addr } = req.query;
   try {
-    const newConnect = await postNewConnect(addr, referrer_code);
-
-    if (newConnect) res.status(200).json(newConnect);
+    const userData = await incFeeCount(addr as string);
+    if (userData) res.status(200).json(userData);
   } catch (err) {
     res.status(500).json(err);
   }

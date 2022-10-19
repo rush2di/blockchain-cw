@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import { useContext } from "react";
 import { Tab } from "@headlessui/react";
 
@@ -9,10 +9,11 @@ import GameDashboard from "./GameDashboard";
 import {
   approvePayment,
   copyToClipboard,
-  feeFromParticipationsCount,
+  participationsToFee,
   getAccBalances,
-  payFeeAndParticipate,
   tokenContractFromAddress,
+  playerParticipate,
+  syncChainUpdates,
 } from "./utils";
 import { _GameticketContent } from "./constants";
 import { TICKET_PRICE } from "shared/constants";
@@ -21,47 +22,74 @@ import { GameContext } from "context/Game";
 
 const GameInterface = () => {
   const { provider, currAccount, contracts } = useContext(Web3AppContext);
+
   const {
     gameID,
-    currParticipants,
+    playerData,
     minParticipants,
+    currParticipants,
     playerParticipations,
     handleUserGameUpdates,
   } = useContext(GameContext);
 
-  const participate = async (tokenAddr: string, decimals: number) => {
-    const tokenContract = tokenContractFromAddress(tokenAddr, contracts);
-    const ticketPrice = ethers.utils.parseUnits(TICKET_PRICE, decimals);
-    const currFeePrice = feeFromParticipationsCount(playerParticipations);
-    const { accBalanceBNB, accBalanceToken } = await getAccBalances(
-      provider!,
+  const playerHasBalance = async (
+    tokenContract: Contract,
+    tokenDecimals: number
+  ) => {
+    const { accBalanceBNB, accBalanceToken } = await getAccBalances({
+      provider: provider!,
+      currAccount: currAccount!,
+      tokenContract: tokenContract,
+      tokenDecimals: tokenDecimals,
+    });
+
+    if (!accBalanceBNB || !accBalanceToken) return false;
+    return true;
+  };
+
+  const approve = async (tokenContract: Contract, tokenDecimals: number) => {
+    const isApproved = await approvePayment(
       tokenContract,
-      currAccount!,
-      decimals
+      ethers.utils.parseUnits(TICKET_PRICE, tokenDecimals)
     );
+    if (isApproved) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
-    if (!accBalanceBNB || !accBalanceToken) return;
+  const participate = async (tokenAddr: string, tokenDecimals: number) => {
+    const tokenContract = tokenContractFromAddress(tokenAddr, contracts);
+    const hasBalance = await playerHasBalance(tokenContract, tokenDecimals);
 
-    const isApproved = await approvePayment(tokenContract, ticketPrice);
+    if (!hasBalance) return;
+
+    const isApproved = await approve(tokenContract, tokenDecimals);
 
     if (isApproved) {
-      const gameUpdated = await payFeeAndParticipate(
-        tokenAddr,
-        currAccount!,
-        gameID,
-        contracts.chainPrizes!,
-        ticketPrice,
-        currFeePrice
-      );
+      await playerParticipate({
+        player: playerData!,
+        tokenAddress: tokenAddr,
+        gameContract: contracts.chainPrizes!,
+        currFeePrice: participationsToFee(playerParticipations),
+        ticketPrice: ethers.utils.parseUnits(TICKET_PRICE, tokenDecimals),
+      });
+      const gameUpdates = await syncChainUpdates({
+        gameContract: contracts.chainPrizes!,
+        currGameID: gameID,
+        player: playerData!,
+      });
       handleUserGameUpdates!(
-        gameUpdated.playerParticipations,
-        gameUpdated.currParticipants
+        gameUpdates.playerParticipations,
+        gameUpdates.currParticipants,
+        gameUpdates.playerData
       );
     }
   };
 
-  const handleParticipate = (tokenAddr: string, decimals: number) => {
-    participate(tokenAddr, decimals).catch((err) => console.log(err));
+  const handleParticipate = (tokenAddr: string, tokenDecimals: number) => {
+    participate(tokenAddr, tokenDecimals).catch((err) => console.log(err));
   };
 
   const handleCopyToClipboard = (str: string) => {

@@ -1,13 +1,19 @@
 import axios from "axios";
 import { Contract } from "ethers";
+import { User } from "@prisma/client";
 
 const getGameState = async (contract: Contract) => {
   const currGameID = await contract.gameId();
   const currParticipants = await contract.gameIdParticipations(currGameID);
-  const connectsHistory = (await axios.get("/api/connects")).data;
   return {
     currGameID: currGameID.toNumber(),
     currParticipants: currParticipants.toNumber(),
+  };
+};
+
+const getGameConnectsHistory = async () => {
+  const connectsHistory = (await axios.get("/api/connects")).data;
+  return {
     connectsHistory,
   };
 };
@@ -30,13 +36,15 @@ const getAccGameState = async (
     currAccount
   );
   const prevGameWinner = await getPrevGameWinner(currGameID, gameContract);
+  const playerData = (await axios.get(`/api/connects/${currAccount}`)).data;
   const playerIsWinner = prevGameWinner === currAccount;
 
   return {
     playerParticipations: playerGames.toNumber(),
     playerRefunds: playerRefunds.toNumber(),
     playerIsWinner,
+    playerData,
   };
 };
 
-export { getGameState, getAccGameState };
+export { getGameState, getGameConnectsHistory, getAccGameState };

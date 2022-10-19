@@ -23,6 +23,8 @@ export const GAME_FEE_2 = process.env.NEXT_PUBLIC_GAME_FEE_2 || "0.003";
 
 export const GAME_FEE_3 = process.env.NEXT_PUBLIC_GAME_FEE_3_PLUS || "0.007";
 
+export const HOST_NAME = "http://localhost:3000/";
+
 export const DAPP_STORAGE_KEY = "isDappApproved";
 
 export const isBrowser = typeof window !== "undefined";

@@ -22,12 +22,30 @@ async function _incRefCount(referrerCode: string) {
   }
 }
 
-async function postNewConnect(addr: string, referrerCode: string | undefined) {
+async function incFeeCount(addr: string) {
+  try {
+    const res = await prisma.user.update({
+      where: {
+        addr: addr,
+      },
+      data: {
+        fee_fixed: {
+          increment: 1,
+        },
+      },
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function postNewConnect(addr: string, referrerCode: string = "") {
   try {
     const newConnect = await prisma.user.create({
       data: {
         addr,
-        referrer_code: referrerCode || "",
+        referrer_code: referrerCode,
         referral_code: shortId.generate(),
         referred: 0,
       },
@@ -62,4 +80,4 @@ async function getConnectByAddress(addr: string) {
   }
 }
 
-export { postNewConnect, getAllConnects, getConnectByAddress };
+export { postNewConnect, getAllConnects, getConnectByAddress, incFeeCount };

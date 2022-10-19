@@ -1,9 +1,16 @@
-import { Web3AppContext } from "context/Web3";
+import { User } from "@prisma/client";
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { onDetectUser, onGameStateLoaded, onUserParticipated } from "./actions";
-import { gameReducer, initState } from "./reducers";
+
+import { Web3AppContext } from "context/Web3";
+import { getGameConnectsHistory, getAccGameState, getGameState } from "./utils";
 import { IGameContextProviderProps, IGameVals } from "./types";
-import { getAccGameState, getGameState } from "./utils";
+import { gameReducer, initState } from "./reducers";
+import {
+  onDetectUser,
+  onFirstLoad,
+  onGameStateLoaded,
+  onUserParticipated,
+} from "./actions";
 
 export const GameContext = createContext<IGameVals>({ ...initState });
 
@@ -13,20 +20,28 @@ const GameContextProvider = ({ children }: IGameContextProviderProps) => {
 
   const handleUserGameUpdates = (
     playerParticipations: number,
-    currParticipants: number
+    currParticipants: number,
+    playerData: User
   ) => {
-    dispatch(onUserParticipated({ playerParticipations, currParticipants }));
+    dispatch(
+      onUserParticipated({ playerParticipations, currParticipants, playerData })
+    );
   };
+
+  useEffect(() => {
+    getGameConnectsHistory().then(({ connectsHistory }) => {
+      dispatch(onFirstLoad({ connectsHistory }));
+    });
+  }, []);
 
   useEffect(() => {
     if (currAccount !== null) {
       getGameState(contracts.chainPrizes!)
-        .then(({ currGameID, currParticipants, connectsHistory }) => {
+        .then(({ currGameID, currParticipants }) => {
           dispatch(
             onGameStateLoaded({
               currParticipants: currParticipants,
               gameID: currGameID,
-              connectsHistory,
             })
           );
         })
@@ -37,20 +52,26 @@ const GameContextProvider = ({ children }: IGameContextProviderProps) => {
   useEffect(() => {
     if (currAccount !== null) {
       getAccGameState(currAccount, contracts.chainPrizes!, contracts.mockBUSD!)
-        .then(({ playerParticipations, playerRefunds, playerIsWinner }) => {
-          dispatch(
-            onDetectUser({
-              playerParticipations,
-              playerRefunds,
-              playerIsWinner,
-            })
-          );
-        })
+        .then(
+          ({
+            playerParticipations,
+            playerRefunds,
+            playerIsWinner,
+            playerData,
+          }) => {
+            dispatch(
+              onDetectUser({
+                playerParticipations,
+                playerRefunds,
+                playerIsWinner,
+                playerData,
+              })
+            );
+          }
+        )
         .catch((err) => console.log(err));
     }
   }, [currAccount]);
-
-  console.log(state);
 
   return (
     <GameContext.Provider value={{ ...state, handleUserGameUpdates }}>
