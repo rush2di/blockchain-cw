@@ -1,27 +1,30 @@
+import axios from "axios";
 import { toast } from "react-toastify";
-import { BigNumber, Contract, ethers, providers } from "ethers";
-import { IDappContractsProps } from "services/ethers";
+import { User } from "@prisma/client";
+import { BigNumber, Contract, ethers } from "ethers";
 
 import {
-  CHAINPRIZES_ADDRESS,
   GAME_FEE_1,
   GAME_FEE_2,
   GAME_FEE_3,
+  MOCKBUSD_ADDRESS,
+  MOCKUSDT_ADDRESS,
+  MOCKUSDC_ADDRESS,
+  CHAINPRIZES_ADDRESS,
 } from "shared/constants";
-import { User } from "@prisma/client";
+import { IDappContractsProps } from "services/ethers";
 import { IGABFunctParams, IPPFuncParams, ISCUFuncParams } from "./type";
-import axios from "axios";
 
 const tokenContractFromAddress = (
   address: string,
   contracts: IDappContractsProps<any>
 ) => {
   switch (address) {
-    case "BUSD":
+    case MOCKBUSD_ADDRESS:
       return contracts.mockBUSD;
-    case "USDT":
+    case MOCKUSDT_ADDRESS:
       return contracts.mockUSDT;
-    case "USDC":
+    case MOCKUSDC_ADDRESS:
       return contracts.mockUSDC;
     default:
       return contracts.mockBUSD;
@@ -34,6 +37,7 @@ const approvePayment = async (tokenContract: Contract, amount: BigNumber) => {
       CHAINPRIZES_ADDRESS,
       amount
     );
+    await transaction.wait();
     return true;
   } catch (error) {
     console.log(error);

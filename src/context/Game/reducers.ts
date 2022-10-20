@@ -5,7 +5,7 @@ import { IGameState } from "./types";
 export const initState = {
   gameID: 0,
   connectsHistory: [],
-  minParticipants: 20,
+  minParticipants: 50,
   currParticipants: 0,
   playerParticipations: 0,
   playerRefunds: null,
@@ -42,7 +42,7 @@ export const gameReducer = (
         ...state,
         currParticipants: actions.payload.currParticipants,
         playerParticipations: actions.payload.playerParticipations,
-        playerData: actions.payload.playerData
+        playerData: actions.payload.playerData,
       };
     default:
       return state;

@@ -8,7 +8,7 @@ import GameInterface from "components/GameInterface";
 const Chainprizes: NextPage = () => {
   return (
     <Layout>
-      {/* <Debuger /> */}
+      <Debuger />
       <section className="container pt-5">
         <h1 className="text-shades-10 font-extrabold text-2xl mb-0-75">
           No Lose 1$ Game

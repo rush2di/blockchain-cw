@@ -19,6 +19,7 @@ import { _GameticketContent } from "./constants";
 import { TICKET_PRICE } from "shared/constants";
 import { Web3AppContext } from "context/Web3";
 import { GameContext } from "context/Game";
+import { toast } from "react-toastify";
 
 const GameInterface = () => {
   const { provider, currAccount, contracts } = useContext(Web3AppContext);
@@ -63,7 +64,10 @@ const GameInterface = () => {
     const tokenContract = tokenContractFromAddress(tokenAddr, contracts);
     const hasBalance = await playerHasBalance(tokenContract, tokenDecimals);
 
-    if (!hasBalance) return;
+    if (!hasBalance) {
+      toast.error("Not enough Balance");
+      return;
+    }
 
     const isApproved = await approve(tokenContract, tokenDecimals);
 
