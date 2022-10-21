@@ -25,7 +25,7 @@ const GameTicket = ({
   handleClick,
 }: TicketProps) => {
   return (
-    <Tab.Panel className="w-full bg-shades-1 border-shades-3 rounded-lg ">
+    <Tab.Panel className="w-full bg-shades-1 border-shades-3 border rounded-lg ">
       <div className="flex flex-col md:flex-row items-center">
         <div className="min-h-[320px] w-full md:w-[370px] md:self-stretch flex items-center justify-center relative after:overlay overflow-hidden rounded-t-lg md:rounded-l-lg md:rounded-tr-none">
           <Image src={cover} layout="fill" objectFit="cover" />
@@ -33,9 +33,9 @@ const GameTicket = ({
             {title}
           </div>
         </div>
-        <div className="p-2 flex flex-col justify-between self-stretch">
+        <div className="lg:p-2 p-1-45 py-2 flex flex-col justify-between self-stretch">
           <div>
-            <h1 className="text-shades-10 font-extrabold mb-0-75 text-1xl">
+            <h1 className="text-shades-10 font-bold mb-0-75 text-1xl">
               {content.heading}
             </h1>
             <p className="text-shades-7">{content.intro}</p>
@@ -66,7 +66,7 @@ const GameTicket = ({
                 ≥ {minParticipants}
               </span>
             </div>
-            <div className="v-seperator" />
+            <div className="v-seperator mr-1-75 h-auto lg:h-full lg:mr-0" />
             <div>
               <span className="text-shades-10 font-bold mb-0-5 block text-base">
                 Current Participants

@@ -22,11 +22,18 @@ const Navbar = ({ currAccount, handleConnect }: NavbarProps) => {
           <div>
             <button
               onClick={handleConnect}
-              className="btn btn--light btn--rounded btn--flex-center"
+              className="btn btn--dark btn--rounded btn--flex-center"
             >
-              {currAccount === null
-                ? "Connect MetaMask"
-                : "Connected"}
+              {currAccount === null ? (
+                <>
+                  <span>Connect MetaMask</span>
+                  <div className="hidden sm:block relative w-3 h-2 ml-0-5">
+                    <img className="absolute top-[-7px] bottom-0 right-[-8px] p-0-25" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/512px-MetaMask_Fox.svg.png?20220831120339" />
+                  </div>
+                </>
+              ) : (
+                "Connected"
+              )}
               {currAccount !== null && <ConnectionBadge />}
             </button>
           </div>

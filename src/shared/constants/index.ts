@@ -1,4 +1,5 @@
-export const _APP_NAME: string = "Chainprizes";
+export const _APP_NAME = "Chainprizes";
+export const _APP_VERSION = "0.1.0";
 
 export const CHAINPRIZES_ADDRESS = process.env.NEXT_PUBLIC_CHAINPRIZES_ADDRESS || "";
 

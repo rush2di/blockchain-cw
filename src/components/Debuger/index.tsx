@@ -1,7 +1,9 @@
 import { ethers } from "ethers";
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import { Web3AppContext } from "context/Web3";
 import Draggable from "react-draggable";
+import { Disclosure } from "@headlessui/react";
+import { classNames } from "shared/utils";
 
 const Debuger = () => {
   const { provider, contracts } = useContext(Web3AppContext);
@@ -20,7 +22,7 @@ const Debuger = () => {
 
   const resetGameState = async () => {
     await contracts.chainPrizes!.resetGameState();
-  }
+  };
 
   const logPrevGamesWinner = async () => {
     const gameID = await contracts.chainPrizes!.gameId();
@@ -86,9 +88,21 @@ const Debuger = () => {
 
   return (
     <Draggable>
-      <div className="fixed p-1 bg-white rounded text-shades-2 left-0 bottom-0 z-50 w-[280px] shadow-lg">
-        <h3 className="text-xl font-bold text-center">Debugger</h3>
-        <div className="[&>*:not(last-child)]:mt-1">
+      <Disclosure
+        as="div"
+        className={classNames(
+          "fixed p-1 bg-white rounded text-shades-2",
+          "left-0 bottom-0 z-50 w-[280px] shadow-lg"
+        )}
+        style={{transformOrigin: "center top !important"}}
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-bold text-center">Debugger</h3>
+          <Disclosure.Button as={Fragment}>
+            <button className="text-sm text-shades-5">menu</button>
+          </Disclosure.Button>
+        </div>
+        <Disclosure.Panel as="div" className="[&>*:not(last-child)]:mt-1">
           <button onClick={handleClick} className="btn btn--dark btn--rounded">
             Fill Accounts
           </button>
@@ -125,8 +139,8 @@ const Debuger = () => {
           >
             Declare Game End
           </button>
-        </div>
-      </div>
+        </Disclosure.Panel>
+      </Disclosure>
     </Draggable>
   );
 };

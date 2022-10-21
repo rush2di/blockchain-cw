@@ -1,11 +1,11 @@
 import React from "react";
-import { _APP_NAME } from "shared/constants";
+import { _APP_NAME, _APP_VERSION } from "shared/constants";
 
 
 const Footer = () => {
   return (
     <div className="w-full bg-shades-1 py-1">
-      <div className="container text-center text-shades-6">copyright {_APP_NAME} 2022</div>
+      <div className="container text-center text-shades-6">{_APP_NAME} v{_APP_VERSION} beta  &#8212;  &#9400;{new Date().getFullYear()}</div>
     </div>
   );
 };

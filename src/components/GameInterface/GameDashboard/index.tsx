@@ -17,8 +17,8 @@ const GameDashboard = ({
   return (
     <Tab.Panel
       className={classNames(
-        "w-full py-0-5 bg-shades-1 min-h-[350px]",
-        "border-shades-3 rounded-lg px-1",
+        "w-full pt-1 lg:py-0-5 bg-shades-1 min-h-[350px]",
+        "border-shades-3 border rounded-lg px-0 lg:px-1",
         !currAccount ? "flex flex-col items-center justify-center" : "flex"
       )}
     >

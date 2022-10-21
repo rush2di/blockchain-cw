@@ -3,7 +3,7 @@ import { classNames } from "shared/utils";
 
 const GameNav = () => {
   return (
-    <div className="w-full py-0-5 bg-shades-1 border-shades-3 rounded-lg px-1">
+    <div className="w-full py-0-5 bg-shades-1 border-shades-3 border rounded-lg px-1">
       <Tab.List className="flex items-center mx-auto lg:w-3/6 w-full">
         <Tab
           className={classNames(
