@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Contract } from "ethers";
+import { Contract, ethers } from "ethers";
 import { User } from "@prisma/client";
 
 const getGameState = async (contract: Contract) => {
@@ -31,17 +31,23 @@ const getAccGameState = async (
 ) => {
   const currGameID = await gameContract.gameId();
   const playerGames = await gameContract.playersParticipations(currAccount);
-  const playerRefunds = await busdContract.allowance(
+  const playerRewards = await busdContract.allowance(
     gameContract.address,
     currAccount
   );
-  const prevGameWinner = await getPrevGameWinner(currGameID, gameContract);
+  const prevGameWinner = await getPrevGameWinner(
+    currGameID.toNumber(),
+    gameContract
+  );
   const playerData = (await axios.get(`/api/connects/${currAccount}`)).data;
   const playerIsWinner = prevGameWinner === currAccount;
+  const rewardsAmount = ethers.utils.formatEther(playerRewards.toString());
 
   return {
     playerParticipations: playerGames.toNumber(),
-    playerRefunds: playerRefunds.toNumber(),
+    playerRewards: rewardsAmount.includes(".")
+      ? parseFloat(rewardsAmount)
+      : parseInt(rewardsAmount),
     playerIsWinner,
     playerData,
   };

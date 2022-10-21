@@ -7,27 +7,32 @@ import {
   GAME_FEE_1,
   GAME_FEE_2,
   GAME_FEE_3,
-  MOCKBUSD_ADDRESS,
-  MOCKUSDT_ADDRESS,
-  MOCKUSDC_ADDRESS,
+  BUSD_ADDRESS,
+  USDT_ADDRESS,
+  USDC_ADDRESS,
   CHAINPRIZES_ADDRESS,
 } from "shared/constants";
 import { IDappContractsProps } from "services/ethers";
-import { IGABFunctParams, IPPFuncParams, ISCUFuncParams } from "./type";
+import {
+  ICRFuncParams,
+  IGABFunctParams,
+  IPPFuncParams,
+  ISCUFuncParams,
+} from "./type";
 
 const tokenContractFromAddress = (
   address: string,
   contracts: IDappContractsProps<any>
 ) => {
   switch (address) {
-    case MOCKBUSD_ADDRESS:
-      return contracts.mockBUSD;
-    case MOCKUSDT_ADDRESS:
-      return contracts.mockUSDT;
-    case MOCKUSDC_ADDRESS:
-      return contracts.mockUSDC;
+    case BUSD_ADDRESS:
+      return contracts.BUSD;
+    case USDT_ADDRESS:
+      return contracts.USDT;
+    case USDC_ADDRESS:
+      return contracts.USDC;
     default:
-      return contracts.mockBUSD;
+      return contracts.BUSD;
   }
 };
 
@@ -130,6 +135,19 @@ const copyToClipboard = (str: string) => {
   toast.success("Copied succesfuly");
 };
 
+const claimRewards = async ({
+  amount,
+  player,
+  gameAddr,
+  tokenContract,
+}: ICRFuncParams) => {
+  await tokenContract.transferFrom(
+    gameAddr,
+    player,
+    ethers.utils.parseEther(amount.toString())
+  );
+};
+
 export {
   playerParticipate,
   tokenContractFromAddress,
@@ -139,4 +157,5 @@ export {
   copyToClipboard,
   hasFeeDiscount,
   syncChainUpdates,
+  claimRewards,
 };

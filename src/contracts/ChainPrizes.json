@@ -225,7 +225,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_tokenAddr",
+          "name": "_tokenAddress",
           "type": "address"
         }
       ],
@@ -348,6 +348,13 @@
     {
       "inputs": [],
       "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "resetGameState",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

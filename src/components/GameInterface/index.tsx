@@ -14,6 +14,7 @@ import {
   tokenContractFromAddress,
   playerParticipate,
   syncChainUpdates,
+  claimRewards,
 } from "./utils";
 import { _GameticketContent } from "./constants";
 import { TICKET_PRICE } from "shared/constants";
@@ -100,6 +101,21 @@ const GameInterface = () => {
     copyToClipboard(str);
   };
 
+  const handleClaim = (amount: number) => {
+    console.log({
+      gameAddr: contracts.chainPrizes!.address,
+      tokenContract: contracts.BUSD!,
+      player: currAccount!,
+      amount,
+    })
+    claimRewards({
+      gameAddr: contracts.chainPrizes!.address,
+      tokenContract: contracts.BUSD!,
+      player: currAccount!,
+      amount,
+    }).catch((err) => console.log(err));
+  };
+
   return (
     <Tab.Group defaultIndex={1}>
       <GameNav />
@@ -107,6 +123,7 @@ const GameInterface = () => {
         <GameDashboard
           currAccount={currAccount}
           handleCopyToClipboard={handleCopyToClipboard}
+          handleClaim={handleClaim}
         />
         <GameTicket
           title={`1$ Game \nTicket`}

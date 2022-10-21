@@ -21,3 +21,10 @@ export interface ISCUFuncParams {
   currGameID: number;
   player: User;
 }
+
+export interface ICRFuncParams {
+  tokenContract: Contract;
+  gameAddr: string;
+  player: string;
+  amount: number;
+}

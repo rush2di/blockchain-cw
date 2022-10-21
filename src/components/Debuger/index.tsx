@@ -13,9 +13,20 @@ const Debuger = () => {
       "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
     ];
     const amount = ethers.utils.parseEther("100000");
-    await contracts.mockBUSD!.faucet(accounts, amount);
-    await contracts.mockUSDT!.faucet(accounts, amount);
-    await contracts.mockUSDC!.faucet(accounts, amount);
+    await contracts.BUSD!.faucet(accounts, amount);
+    await contracts.USDT!.faucet(accounts, amount);
+    await contracts.USDC!.faucet(accounts, amount);
+  };
+
+  const resetGameState = async () => {
+    await contracts.chainPrizes!.resetGameState();
+  }
+
+  const logPrevGamesWinner = async () => {
+    const gameID = await contracts.chainPrizes!.gameId();
+    const payload = gameID.toNumber() < 2 ? 0 : gameID.toNumber() - 1;
+    const res = await contracts.chainPrizes!.gameHistory(payload);
+    console.log(res);
   };
 
   const logFundsETH = async () => {
@@ -24,13 +35,13 @@ const Debuger = () => {
   };
 
   const logFundsTokens = async () => {
-    const busd = await contracts.mockBUSD!.balanceOf(
+    const busd = await contracts.BUSD!.balanceOf(
       contracts.chainPrizes!.address
     );
-    const usdt = await contracts.mockUSDT!.balanceOf(
+    const usdt = await contracts.USDT!.balanceOf(
       contracts.chainPrizes!.address
     );
-    const usdc = await contracts.mockUSDC!.balanceOf(
+    const usdc = await contracts.USDC!.balanceOf(
       contracts.chainPrizes!.address
     );
     console.log(`Contract's Tokens Balance 
@@ -62,7 +73,7 @@ const Debuger = () => {
   const declareGameEnd = async () => {
     const seed = Math.random() * new Date().getSeconds();
     const ethSeed = ethers.utils.parseEther(seed.toFixed(1));
-    const winAmount = ethers.utils.parseEther("25.0");
+    const winAmount = ethers.utils.parseEther("5.0");
     const refundAmount = ethers.utils.parseEther("0.5");
     console.log(`
     seed = ${ethers.utils.formatEther(ethSeed)}
@@ -95,6 +106,18 @@ const Debuger = () => {
             className="btn btn--dark btn--rounded"
           >
             Log Tokens Balances
+          </button>
+          <button
+            onClick={logPrevGamesWinner}
+            className="btn btn--dark btn--rounded"
+          >
+            Log Games History
+          </button>
+          <button
+            onClick={resetGameState}
+            className="btn btn--dark btn--rounded"
+          >
+            Reset Game State
           </button>
           <button
             onClick={declareGameEnd}

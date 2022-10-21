@@ -1,22 +1,22 @@
 import { ethers, Contract } from "ethers";
 
 import ChainPrizes from "contracts/ChainPrizes.json";
-import MockBUSD from "contracts/MockBUSD.json";
-import MockUSDT from "contracts/MockUSDT.json";
-import MockUSDC from "contracts/MockUSDC.json";
+import BUSD_c from "contracts/MOCKBUSD.json";
+import USDT_c from "contracts/MOCKUSDT.json";
+import USDC_c from "contracts/MOCKUSDC.json";
 
 import {
   CHAINPRIZES_ADDRESS,
-  MOCKBUSD_ADDRESS,
-  MOCKUSDT_ADDRESS,
-  MOCKUSDC_ADDRESS,
+  BUSD_ADDRESS,
+  USDT_ADDRESS,
+  USDC_ADDRESS,
 } from "shared/constants";
 
 export interface IDappContractsProps<T> {
   chainPrizes: T;
-  mockBUSD: T;
-  mockUSDT: T;
-  mockUSDC: T;
+  BUSD: T;
+  USDT: T;
+  USDC: T;
 }
 
 export interface IWeb3Response<T1, T2> {
@@ -37,34 +37,22 @@ const initWeb3 = async (): Promise<
       signer
     );
 
-    const mockBUSD = new Contract(
-      MOCKBUSD_ADDRESS as string,
-      MockBUSD.abi,
-      signer
-    );
-    const mockUSDT = new Contract(
-      MOCKUSDT_ADDRESS as string,
-      MockUSDT.abi,
-      signer
-    );
-    const mockUSDC = new Contract(
-      MOCKUSDC_ADDRESS as string,
-      MockUSDC.abi,
-      signer
-    );
+    const BUSD = new Contract(BUSD_ADDRESS as string, BUSD_c.abi, signer);
+    const USDT = new Contract(USDT_ADDRESS as string, USDT_c.abi, signer);
+    const USDC = new Contract(USDC_ADDRESS as string, USDC_c.abi, signer);
 
     return {
       provider,
-      contracts: { chainPrizes, mockBUSD, mockUSDT, mockUSDC },
+      contracts: { chainPrizes, BUSD, USDT, USDC },
     };
   } else {
     return {
       provider: null,
       contracts: {
         chainPrizes: null,
-        mockBUSD: null,
-        mockUSDT: null,
-        mockUSDC: null,
+        BUSD: null,
+        USDT: null,
+        USDC: null,
       },
     };
   }

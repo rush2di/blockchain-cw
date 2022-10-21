@@ -107,7 +107,6 @@ const TicketProgressBar = ({
 
 const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
   const [selected, setSelected] = useState(_tokens[0]);
-
   return (
     <>
       <button

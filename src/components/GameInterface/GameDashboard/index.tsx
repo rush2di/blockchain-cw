@@ -11,12 +11,13 @@ import { IGameDashboardProps, IGameDashboardBodyItemProps } from "./types";
 
 const GameDashboard = ({
   currAccount,
+  handleClaim,
   handleCopyToClipboard,
 }: IGameDashboardProps) => {
   return (
     <Tab.Panel
       className={classNames(
-        "w-full py-0-5 bg-shades-1 min-h-[400px]",
+        "w-full py-0-5 bg-shades-1 min-h-[350px]",
         "border-shades-3 rounded-lg px-1",
         !currAccount ? "flex flex-col items-center justify-center" : "flex"
       )}
@@ -26,6 +27,7 @@ const GameDashboard = ({
       ) : (
         <GameDashboardBody
           currAccount={currAccount}
+          handleClaim={handleClaim}
           handleCopyToClipboard={handleCopyToClipboard}
         />
       )}
@@ -35,16 +37,17 @@ const GameDashboard = ({
 
 const GameDashboardBody = ({
   currAccount,
+  handleClaim,
   handleCopyToClipboard,
 }: IGameDashboardProps) => {
-  const { playerParticipations, playerRefunds, playerData } =
+  const { playerParticipations, playerRewards, playerData } =
     useContext(GameContext);
 
   return (
     <div className="flex w-full items-center justify-center">
       <div className="row w-full">
         <div className="lg:col-5 col-12">
-          <div className="py-1 flex flex-col">
+          <div className="py-1 flex flex-col h-full justify-center">
             <div className="mb-1">
               <GameDashboardBodyItem
                 title="Your Connected Address"
@@ -63,41 +66,6 @@ const GameDashboardBody = ({
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
               molestiae placeat dicta provident hic incidunt.
             </p>
-            <div>
-              <h3 className="font-semibold text-lg mb-0-5 ml-0-45">
-                Your Referrals Status
-              </h3>
-              <div
-                className={classNames(
-                  "flex bg-black rounded border border-l-4",
-                  "overflow-hidden border-shades-2 w-fit",
-                  `${
-                    playerData!.referred > 0
-                      ? "border-l-green-500"
-                      : "border-l-red-500"
-                  }`
-                )}
-              >
-                <span
-                  className={classNames(
-                    "flex items-center text-shades-8 font-bold",
-                    "pointer-events-none px-1"
-                  )}
-                >
-                  {playerData!.referred}
-                </span>
-                <div
-                  className={classNames(
-                    "px-1 py-0-5 flex items-center w-full",
-                    "border-l border-shades-2"
-                  )}
-                >
-                  <span className="block text-shades-9 text-md mb-0">
-                    Person referred so far
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div className="lg:col-7 col-12">
@@ -136,27 +104,43 @@ const GameDashboardBody = ({
                           " text-shades-10 font-semibold"
                         )}
                       >
-                        Available refunds amount
+                        Claimable amount
                       </td>
                       <td className="p-0-75 lg:p-1 border-b border-shades-2">
-                        {playerRefunds}
+                        {playerRewards}
                       </td>
                       <td className="p-0-75 lg:p-1 border-b border-shades-2">
-                        <button disabled className="btn btn--sm btn--muted">
+                        <button
+                          disabled={playerRewards! < 1}
+                          className={classNames(
+                            "btn btn--sm ",
+                            `${
+                              playerRewards! < 1 ? "btn--muted" : "btn--light"
+                            }`
+                          )}
+                          onClick={() => handleClaim(playerRewards!)}
+                        >
                           Claim
                         </button>
                       </td>
                     </tr>
                     <tr>
                       <td className="p-0-75 lg:p-1 text-shades-10 font-semibold">
-                        Wins history
+                        Your referrals so far
                       </td>
-                      <td className="p-0-75 lg:p-1 ">0</td>
+                      <td className="p-0-75 lg:p-1 ">{playerData!.referred}</td>
                       <td
                         aria-hidden
-                        className="p-0-75 lg:p-1 text-black pointer-events-none"
+                        className={classNames(
+                          "p-0-75 lg:p-1 pointer-events-none",
+                          "[&>span]:text-xl text-center"
+                        )}
                       >
-                        empty
+                        {playerData!.referred > 0 ? (
+                          <span>😍</span>
+                        ) : (
+                          <span>😔</span>
+                        )}
                       </td>
                     </tr>
                   </tbody>

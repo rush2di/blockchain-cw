@@ -1,16 +1,16 @@
 import {
-  MOCKBUSD_ADDRESS,
-  MOCKBUSD_DECIMALS,
-  MOCKUSDC_ADDRESS,
-  MOCKUSDC_DECIMALS,
-  MOCKUSDT_ADDRESS,
-  MOCKUSDT_DECIMALS,
+  BUSD_ADDRESS,
+  BUSD_DECIMALS,
+  USDC_ADDRESS,
+  USDC_DECIMALS,
+  USDT_ADDRESS,
+  USDT_DECIMALS,
 } from "shared/constants";
 
 const _tokens = [
-  { name: "BUSD", address: MOCKBUSD_ADDRESS, decimals: MOCKBUSD_DECIMALS },
-  { name: "USDT", address: MOCKUSDT_ADDRESS, decimals: MOCKUSDT_DECIMALS },
-  { name: "USDC", address: MOCKUSDC_ADDRESS, decimals: MOCKUSDC_DECIMALS },
+  { name: "BUSD", address: BUSD_ADDRESS, decimals: BUSD_DECIMALS },
+  { name: "USDT", address: USDT_ADDRESS, decimals: USDT_DECIMALS },
+  { name: "USDC", address: USDC_ADDRESS, decimals: USDC_DECIMALS },
 ];
 
 export { _tokens };

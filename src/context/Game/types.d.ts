@@ -7,7 +7,7 @@ export interface IGameState {
   minParticipants: number;
   currParticipants: number;
   playerParticipations: number;
-  playerRefunds: Array<number> | null;
+  playerRewards: number | null;
   playerIsWinner: boolean;
   playerData: User | null;
 }
@@ -26,7 +26,7 @@ export interface IGameContextProviderProps {
 
 export interface IOnDetectUserActionPayload
   extends IGameState["playerParticipations"],
-    IGameState["playerRefunds"],
+    IGameState["playerRewards"],
     IGameState["playerIsWinner"] {}
 
 export interface IOnGameStateLoadedActionPayload

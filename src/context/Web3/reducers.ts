@@ -8,9 +8,9 @@ export const web3InitState = {
   currAccount: null,
   contracts: {
     chainPrizes: null,
-    mockBUSD: null,
-    mockUSDT: null,
-    mockUSDC: null,
+    BUSD: null,
+    USDT: null,
+    USDC: null,
   },
 };
 

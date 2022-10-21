@@ -81,9 +81,9 @@ const Web3AppProvider = ({ children }: IWeb3AppProviderProps) => {
         connectAccount: connectAccount,
         contracts: {
           chainPrizes: state.contracts.chainPrizes,
-          mockBUSD: state.contracts.mockBUSD,
-          mockUSDT: state.contracts.mockUSDT,
-          mockUSDC: state.contracts.mockUSDC,
+          BUSD: state.contracts.BUSD,
+          USDT: state.contracts.USDT,
+          USDC: state.contracts.USDC,
         },
       }}
     >

@@ -51,18 +51,18 @@ const GameContextProvider = ({ children }: IGameContextProviderProps) => {
 
   useEffect(() => {
     if (currAccount !== null) {
-      getAccGameState(currAccount, contracts.chainPrizes!, contracts.mockBUSD!)
+      getAccGameState(currAccount, contracts.chainPrizes!, contracts.BUSD!)
         .then(
           ({
             playerParticipations,
-            playerRefunds,
+            playerRewards,
             playerIsWinner,
             playerData,
           }) => {
             dispatch(
               onDetectUser({
                 playerParticipations,
-                playerRefunds,
+                playerRewards,
                 playerIsWinner,
                 playerData,
               })

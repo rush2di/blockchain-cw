@@ -49,7 +49,7 @@ module.exports = {
     },
     screens: _custom_screens,
     fontFamily: {
-      prim: ["Montserrat", ...defaultTheme.fontFamily.sans],
+      prim: ["Roboto", ...defaultTheme.fontFamily.sans],
     },
     fontSize: {
       xs: ".75rem",
