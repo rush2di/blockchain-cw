@@ -6,7 +6,7 @@ import { Disclosure } from "@headlessui/react";
 import { classNames } from "shared/utils";
 
 const Debuger = () => {
-  const { provider, contracts } = useContext(Web3AppContext);
+  const { provider, contracts, currAccount } = useContext(Web3AppContext);
 
   const handleClick = async () => {
     const accounts = [
@@ -20,8 +20,18 @@ const Debuger = () => {
     await contracts.USDC!.faucet(accounts, amount);
   };
 
+  const fillContractFunds = async () => {
+    const amount = ethers.utils.parseEther("1000");
+    await contracts.BUSD!.faucet([contracts.chainPrizes!.address], amount);
+  }
+
   const resetGameState = async () => {
     await contracts.chainPrizes!.resetGameState();
+  };
+
+  const logCurrPlayerParticipations = async () => {
+    const res = await contracts.chainPrizes!.playersParticipations(currAccount!);
+    console.log(`Current player participation = ${res.toNumber()}`);
   };
 
   const logPrevGamesWinner = async () => {
@@ -75,8 +85,8 @@ const Debuger = () => {
   const declareGameEnd = async () => {
     const seed = Math.random() * new Date().getSeconds();
     const ethSeed = ethers.utils.parseEther(seed.toFixed(1));
-    const winAmount = ethers.utils.parseEther("5.0");
-    const refundAmount = ethers.utils.parseEther("0.5");
+    const winAmount = ethers.utils.parseEther("10.0");
+    const refundAmount = ethers.utils.parseEther("1");
     console.log(`
     seed = ${ethers.utils.formatEther(ethSeed)}
     winAmount = ${ethers.utils.formatEther(winAmount)}
@@ -94,7 +104,7 @@ const Debuger = () => {
           "fixed p-1 bg-white rounded text-shades-2",
           "left-0 bottom-0 z-50 w-[280px] shadow-lg"
         )}
-        style={{transformOrigin: "center top !important"}}
+        style={{ transformOrigin: "center top !important" }}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold text-center">Debugger</h3>
@@ -138,6 +148,18 @@ const Debuger = () => {
             className="btn btn--dark btn--rounded"
           >
             Declare Game End
+          </button>
+          <button
+            onClick={logCurrPlayerParticipations}
+            className="btn btn--dark btn--rounded"
+          >
+            Log player Participations
+          </button>
+          <button
+            onClick={fillContractFunds}
+            className="btn btn--dark btn--rounded"
+          >
+            Fill Contract Funds
           </button>
         </Disclosure.Panel>
       </Disclosure>
