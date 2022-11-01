@@ -1,10 +1,10 @@
-import { useRef } from "react";
-import { Dialog } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { Fragment, useRef } from "react";
 import { classNames } from "shared/utils";
 
-const MetamaskAlert = () => {
-  const getMetamaskButton = useRef(null);
+const NetworkAlert = () => {
+  const getBSCNetwork = useRef(null);
 
   return (
     <Dialog
@@ -12,7 +12,7 @@ const MetamaskAlert = () => {
       static={true}
       open={true}
       className="relative z-10"
-      initialFocus={getMetamaskButton}
+      initialFocus={getBSCNetwork}
       onClose={() => {}}
     >
       <div className="fixed inset-0 bg-shades-1 bg-opacity-80 transition-opacity" />
@@ -48,13 +48,17 @@ const MetamaskAlert = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    MetaMask Extension not Installed
+                    Wrong Network
                   </Dialog.Title>
                   <div className="mt-0-5">
                     <p className="text-sm text-gray-500">
-                      This Dapp cannot run without MetaMask. To use this Dapp,
-                      please click "Get MetaMask" button and download it for
-                      your browser.
+                      Please switch to Binance Smart Chain Network to be able to
+                      use this Dapp.
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      In case you don't have BSC network setup on your Metamask
+                      please refer to the official Binance tutorial by clicking
+                      "Get BSC Network"
                     </p>
                   </div>
                 </div>
@@ -62,17 +66,17 @@ const MetamaskAlert = () => {
             </div>
             <div className="bg-shades-9 px-1 py-1-25 sm:flex sm:flex-row-reverse sm:px-2">
               <a
-                href="https://metamask.io/"
+                href="https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain"
                 target="_blank"
                 type="button"
-                ref={getMetamaskButton}
+                ref={getBSCNetwork}
                 className={classNames(
                   "btn btn--rounded btn--light text-center",
                   "focus:outline-none focus:ring-2 focus:ring-shades-3",
                   "focus:ring-offset-2 sm:w-auto"
                 )}
               >
-                Get MetaMask
+                Get BSC Network
               </a>
             </div>
           </Dialog.Panel>
@@ -82,4 +86,4 @@ const MetamaskAlert = () => {
   );
 };
 
-export default MetamaskAlert;
+export default NetworkAlert;

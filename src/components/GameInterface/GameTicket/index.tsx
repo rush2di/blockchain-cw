@@ -8,12 +8,13 @@ import {
   TicketButtonsProps,
   TicketProps,
 } from "./types";
-import { _tokens } from "./constants";
+import { ACP_AMOUNT, _tokens } from "./constants";
 import {
   tokenImageTransformer,
   toUSDCurrencyString,
   progressPercent,
 } from "./utils";
+import { classNames } from "shared/utils";
 
 const GameTicket = ({
   title,
@@ -25,23 +26,41 @@ const GameTicket = ({
   handleClick,
 }: TicketProps) => {
   return (
-    <Tab.Panel className="w-full bg-shades-1 border-shades-3 border rounded-lg ">
+    <Tab.Panel
+      className={classNames(
+        "w-full bg-shades-1 border-shades-3",
+        "border rounded-lg relative"
+      )}
+    >
       <div className="flex flex-col md:flex-row items-center">
-        <div className="min-h-[320px] w-full md:w-[370px] md:self-stretch flex items-center justify-center relative after:overlay overflow-hidden rounded-t-lg md:rounded-l-lg md:rounded-tr-none">
+        <div
+          className={classNames(
+            "min-h-[320px] lg:w-[350px] md:w-[250px] w-full",
+            "md:self-stretch flex items-center justify-center relative",
+            "after:overlay overflow-hidden rounded-t-lg",
+            "md:rounded-l-lg md:rounded-tr-none"
+          )}
+        >
           <Image src={cover} layout="fill" objectFit="cover" />
-          <div className="absolute flex items-center justify-center left-0 top-0 w-full h-full uppercase font-bold z-10 whitespace-pre text-center text-xl">
+          <div
+            className={classNames(
+              "absolute flex items-center justify-center left-0",
+              "top-0 w-full h-full uppercase font-bold z-10",
+              "whitespace-pre text-center text-xl"
+            )}
+          >
             {title}
           </div>
         </div>
-        <div className="lg:p-2 p-1-45 py-2 flex flex-col justify-between self-stretch">
+        <div className="lg:p-2 p-1-45 py-2 flex flex-col justify-between self-stretch w-full lg:w-3/5">
           <div>
             <h1 className="text-shades-10 font-bold mb-0-75 text-1xl">
               {content.heading}
             </h1>
-            <p className="text-shades-7">{content.intro}</p>
+            <p className="text-shades-7 mb-0-45">{content.intro}</p>
             <ul className="text-shades-7">
-              <li>- {content.winOutcome}</li>
-              <li>- {content.loseOutcome}</li>
+              <li className="mb-0-45">- {content.winOutcome}</li>
+              <li className="mb-0-45">- {content.loseOutcome}</li>
             </ul>
           </div>
           <div className="pt-1 pb-1">
@@ -72,7 +91,7 @@ const GameTicket = ({
                 Current Participants
               </span>
               <span className="text-shades-8 mb-0-5 block text-md">
-                ~ {currParticipants}
+                ~ {currParticipants + ACP_AMOUNT}
               </span>
             </div>
           </div>
@@ -98,7 +117,9 @@ const TicketProgressBar = ({
   return (
     <div className="w-full h-0-5 bg-shades-3 rounded">
       <div
-        style={{ width: `${progressPercent(minParticipants, currParticipants)}%` }}
+        style={{
+          width: `${progressPercent(minParticipants, currParticipants + ACP_AMOUNT)}%`,
+        }}
         className="h-0-5 bg-amber-500 rounded"
       />
     </div>
@@ -121,7 +142,12 @@ const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
       <div className="block self-stretch w-full mb-1 md:mb-0 md:w-1/2 md:ml-1">
         <Listbox value={selected} onChange={setSelected}>
           <div className="relative w-full h-full">
-            <Listbox.Button className="cursor-pointer relative h-full w-full btn btn--dark btn--rounded pl-1 pr-2-75 text-left font-bold">
+            <Listbox.Button
+              className={classNames(
+                "cursor-pointer relative h-full w-full btn btn--dark",
+                "btn--rounded pl-1 pr-2-75 text-left font-bold"
+              )}
+            >
               <div className="flex truncate text-shades-9 items-center">
                 <span className="text-sm font-normal">pay with </span>
                 <span className="ml-0-45">{selected.name}</span>
@@ -145,7 +171,13 @@ const TicketButtons = ({ disabled, handleClick }: TicketButtonsProps) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-shades-1 border-shades-3 py-1 text-base shadow-lg ring-1 ring-shades-3 ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options
+                className={classNames(
+                  "absolute mt-1 max-h-60 w-full overflow-auto rounded-lg",
+                  "bg-shades-1 border-shades-3 py-1 text-base shadow-lg ring-1",
+                  "ring-shades-3 ring-opacity-5 focus:outline-none sm:text-sm"
+                )}
+              >
                 {_tokens.map((token, tokenIdx) => (
                   <Listbox.Option
                     key={tokenIdx}

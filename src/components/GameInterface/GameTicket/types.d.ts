@@ -15,7 +15,7 @@ export interface TicketContentProps {
   winOutcome: string;
   loseOutcome: string;
   entryPrice: number;
-  prevPrice: number;
+  prevPrice: string;
 }
 
 export interface TicketProgressBarProps {

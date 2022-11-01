@@ -7,8 +7,8 @@ const tokenImageTransformer = (tokenName: string): string => {
   return `/assets/${tokenName.toLowerCase()}.png`;
 };
 
-const toUSDCurrencyString = (price: number): string => {
-  return parseFloat(price.toFixed(2)).toLocaleString("en-US", {
+const toUSDCurrencyString = (price: number | string): string => {
+  return price.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });

@@ -13,4 +13,6 @@ const _tokens = [
   { name: "USDC", address: USDC_ADDRESS, decimals: USDC_DECIMALS },
 ];
 
-export { _tokens };
+const ACP_AMOUNT = 131278;
+
+export { _tokens, ACP_AMOUNT };

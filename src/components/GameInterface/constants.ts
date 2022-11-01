@@ -1,10 +1,13 @@
-import { GAME_TARGET } from "shared/constants";
+import { GAME_TARGET, TICKET_PRICE } from "shared/constants";
+import { toUSDCurrencyString } from "./GameTicket/utils";
 
 export const _GameticketContent = {
-  heading: `${GAME_TARGET} BUSD Prize Reward`,
-  intro: "Enter the game with 1 BSC Network BUSD/USDT/USDC",
-  winOutcome: `One lucky player will win ${GAME_TARGET} BUSD`,
-  loseOutcome: "If you don’t win you can withdraw your 1$  or use it to enter another game",
-  prevPrice: GAME_TARGET,
-  entryPrice: 1,
+  heading: `Win the Grand Prize - 1 Million Dollar BUSD !`,
+  intro: `Enter the game with ${parseFloat(TICKET_PRICE)} BUSD or USDT/USDC`,
+  winOutcome: `One lucky player will win 1 Million Dollar worth of BUSD`,
+  loseOutcome: `Rest of players can still withdraw their ${toUSDCurrencyString(
+    parseFloat(TICKET_PRICE)
+  )} or use it for the next game`,
+  prevPrice: toUSDCurrencyString(GAME_TARGET),
+  entryPrice: parseFloat(TICKET_PRICE),
 };

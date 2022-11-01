@@ -19,7 +19,7 @@ const Navbar = ({ currAccount, handleConnect }: NavbarProps) => {
             </div>
             <span className="ml-0-5 font-bold">{_APP_NAME}</span>
           </div>
-          <div>
+          <div className="flex space-x-1">
             <button
               onClick={handleConnect}
               className="btn btn--dark btn--rounded btn--flex-center"

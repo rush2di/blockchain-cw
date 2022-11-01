@@ -89,11 +89,6 @@
           "internalType": "uint256",
           "name": "_winAmount",
           "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_refundAmount",
-          "type": "uint256"
         }
       ],
       "name": "endGame",

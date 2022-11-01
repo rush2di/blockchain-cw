@@ -8,6 +8,7 @@ import { Web3AppContext } from "context/Web3";
 import { hasConnectsHistory } from "./utils";
 import { GameContext } from "context/Game";
 import { useRouter } from "next/router";
+import NetworkAlert from "components/NetworkAlert";
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,7 +17,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const { query } = useRouter();
   const { connectsHistory } = useContext(GameContext);
-  const { provider, mmInstalled, currAccount, connectAccount } =
+  const { provider, mmInstalled, currAccount, isBSC, connectAccount } =
     useContext(Web3AppContext);
 
   const handleConnect = () => {
@@ -43,6 +44,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Navbar currAccount={currAccount} handleConnect={handleConnect} />
       <main className="min-h-screen bg-pattern bg-cover bg-left-top">
         {mmInstalled === false && <MetamaskAlert />}
+        {mmInstalled === true && isBSC === true && <NetworkAlert />}
         {children}
       </main>
       <Footer />

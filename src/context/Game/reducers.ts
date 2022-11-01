@@ -1,4 +1,3 @@
-import { GAME_TARGET } from "shared/constants";
 import { IReducerAction } from "shared/types";
 import { GAME_ACTION_TYPES } from "./constants";
 import { IGameState } from "./types";
@@ -6,7 +5,7 @@ import { IGameState } from "./types";
 export const initState = {
   gameID: 0,
   connectsHistory: [],
-  minParticipants: GAME_TARGET,
+  minParticipants: 455000,
   currParticipants: 0,
   playerParticipations: 0,
   playerRewards: null,

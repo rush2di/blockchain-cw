@@ -5,6 +5,7 @@ import { IWeb3Response } from "services/ethers";
 export interface IWeb3AppContextProps
   extends IWeb3Response<providers.Web3Provider | null, Contract | null> {
   mmInstalled: boolean | null;
+  isBSC: boolean | null;
   currAccount: string | null;
   connectAccount?(account: string | null): void;
 }

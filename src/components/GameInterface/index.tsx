@@ -102,12 +102,6 @@ const GameInterface = () => {
   };
 
   const handleClaim = (amount: number) => {
-    console.log({
-      gameAddr: contracts.chainPrizes!.address,
-      tokenContract: contracts.BUSD!,
-      player: currAccount!,
-      amount,
-    })
     claimRewards({
       gameAddr: contracts.chainPrizes!.address,
       tokenContract: contracts.BUSD!,

@@ -1,11 +1,13 @@
 import { ethers } from "ethers";
-import { Fragment, useContext } from "react";
-import { Web3AppContext } from "context/Web3";
+import { Fragment, useContext, useRef } from "react";
+import { Menu, Transition } from "@headlessui/react";
 import Draggable from "react-draggable";
-import { Disclosure } from "@headlessui/react";
+
+import { Web3AppContext } from "context/Web3";
 import { classNames } from "shared/utils";
 
 const Debuger = () => {
+  const nodeRef = useRef(null);
   const { provider, contracts, currAccount } = useContext(Web3AppContext);
 
   const handleClick = async () => {
@@ -23,14 +25,16 @@ const Debuger = () => {
   const fillContractFunds = async () => {
     const amount = ethers.utils.parseEther("1000");
     await contracts.BUSD!.faucet([contracts.chainPrizes!.address], amount);
-  }
+  };
 
   const resetGameState = async () => {
     await contracts.chainPrizes!.resetGameState();
   };
 
   const logCurrPlayerParticipations = async () => {
-    const res = await contracts.chainPrizes!.playersParticipations(currAccount!);
+    const res = await contracts.chainPrizes!.playersParticipations(
+      currAccount!
+    );
     console.log(`Current player participation = ${res.toNumber()}`);
   };
 
@@ -97,72 +101,121 @@ const Debuger = () => {
   };
 
   return (
-    <Draggable>
-      <Disclosure
+    <Draggable nodeRef={nodeRef}>
+      <Menu
         as="div"
         className={classNames(
           "fixed p-1 bg-white rounded text-shades-2",
-          "left-0 bottom-0 z-50 w-[280px] shadow-lg"
+          "left-0 bottom-0 z-50 w-[280px] shadow-lg relative"
         )}
         style={{ transformOrigin: "center top !important" }}
+        ref={nodeRef}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold text-center">Debugger</h3>
-          <Disclosure.Button as={Fragment}>
+          <Menu.Button as={Fragment}>
             <button className="text-sm text-shades-5">menu</button>
-          </Disclosure.Button>
+          </Menu.Button>
         </div>
-        <Disclosure.Panel as="div" className="[&>*:not(last-child)]:mt-1">
-          <button onClick={handleClick} className="btn btn--dark btn--rounded">
-            Fill Accounts
-          </button>
-          <button onClick={logGameID} className="btn btn--dark btn--rounded">
-            Log Game ID
-          </button>
-          <button onClick={logPlayers} className="btn btn--dark btn--rounded">
-            Log Players List
-          </button>
-          <button onClick={logFundsETH} className="btn btn--dark btn--rounded">
-            Log Chain Native Funds
-          </button>
-          <button
-            onClick={logFundsTokens}
-            className="btn btn--dark btn--rounded"
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items
+            as="div"
+            className={classNames(
+              "[&>*]:mt-1 [&>*:first-child]:mt-0 absolute p-1",
+              "bg-white top-5 left-0 rounded"
+            )}
           >
-            Log Tokens Balances
-          </button>
-          <button
-            onClick={logPrevGamesWinner}
-            className="btn btn--dark btn--rounded"
-          >
-            Log Games History
-          </button>
-          <button
-            onClick={resetGameState}
-            className="btn btn--dark btn--rounded"
-          >
-            Reset Game State
-          </button>
-          <button
-            onClick={declareGameEnd}
-            className="btn btn--dark btn--rounded"
-          >
-            Declare Game End
-          </button>
-          <button
-            onClick={logCurrPlayerParticipations}
-            className="btn btn--dark btn--rounded"
-          >
-            Log player Participations
-          </button>
-          <button
-            onClick={fillContractFunds}
-            className="btn btn--dark btn--rounded"
-          >
-            Fill Contract Funds
-          </button>
-        </Disclosure.Panel>
-      </Disclosure>
+            <Menu.Item>
+              <button
+                onClick={handleClick}
+                className="btn btn--dark btn--rounded"
+              >
+                Fill Accounts
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={logGameID}
+                className="btn btn--dark btn--rounded"
+              >
+                Log Game ID
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={logPlayers}
+                className="btn btn--dark btn--rounded"
+              >
+                Log Players List
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={logFundsETH}
+                className="btn btn--dark btn--rounded"
+              >
+                Log Chain Native Funds
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={logFundsTokens}
+                className="btn btn--dark btn--rounded"
+              >
+                Log Tokens Balances
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={logPrevGamesWinner}
+                className="btn btn--dark btn--rounded"
+              >
+                Log Games History
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={resetGameState}
+                className="btn btn--dark btn--rounded"
+              >
+                Reset Game State
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={declareGameEnd}
+                className="btn btn--dark btn--rounded"
+              >
+                Declare Game End
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={logCurrPlayerParticipations}
+                className="btn btn--dark btn--rounded"
+              >
+                Log player Participations
+              </button>
+            </Menu.Item>
+            <Menu.Item>
+              <button
+                onClick={fillContractFunds}
+                className="btn btn--dark btn--rounded"
+              >
+                Fill Contract Funds
+              </button>
+            </Menu.Item>
+          </Menu.Items>
+        </Transition>
+      </Menu>
     </Draggable>
   );
 };

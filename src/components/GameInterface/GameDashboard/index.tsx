@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { GameContext } from "context/Game";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import { HOST_NAME } from "shared/constants";
 import { classNames } from "shared/utils";
 import { IGameDashboardProps, IGameDashboardBodyItemProps } from "./types";
@@ -14,6 +15,7 @@ const GameDashboard = ({
   handleClaim,
   handleCopyToClipboard,
 }: IGameDashboardProps) => {
+  const { playerData } = useContext(GameContext);
   return (
     <Tab.Panel
       className={classNames(
@@ -22,7 +24,7 @@ const GameDashboard = ({
         !currAccount ? "flex flex-col items-center justify-center" : "flex"
       )}
     >
-      {!currAccount ? (
+      {!currAccount || !playerData ? (
         <GameDashboardNotice />
       ) : (
         <GameDashboardBody
@@ -40,8 +42,16 @@ const GameDashboardBody = ({
   handleClaim,
   handleCopyToClipboard,
 }: IGameDashboardProps) => {
-  const { playerParticipations, playerRewards, playerData } =
+  const { playerParticipations, playerRewards, playerData, gameID } =
     useContext(GameContext);
+
+  const onClaim = () => {
+    if (!!gameID) {
+      handleClaim(playerRewards! + playerData!.referred);
+    } else {
+      toast.error("Game not complete yet");
+    }
+  };
 
   return (
     <div className="flex w-full items-center justify-center">
@@ -63,8 +73,9 @@ const GameDashboardBody = ({
               />
             </div>
             <p className="text-md text-shades-7 mx-0-25 mb-1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-              molestiae placeat dicta provident hic incidunt.
+              You win 1$ worth of BUSD for each new player you referred + a fee
+              discount for your next participation, your won tokens are
+              claimable after the game winner anouncment.
             </p>
           </div>
         </div>
@@ -107,7 +118,7 @@ const GameDashboardBody = ({
                         Claimable amount
                       </td>
                       <td className="p-0-75 lg:p-1 border-b border-shades-2">
-                        {playerRewards}
+                        {playerData!.referred + playerRewards!}
                       </td>
                       <td className="p-0-75 lg:p-1 border-b border-shades-2">
                         <button
@@ -118,7 +129,7 @@ const GameDashboardBody = ({
                               playerRewards! < 1 ? "btn--muted" : "btn--light"
                             }`
                           )}
-                          onClick={() => handleClaim(playerRewards!)}
+                          onClick={onClaim}
                         >
                           Claim
                         </button>

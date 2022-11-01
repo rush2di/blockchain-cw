@@ -60,6 +60,7 @@ const Web3AppProvider = ({ children }: IWeb3AppProviderProps) => {
         onConnectWallet({
           provider: provider as Web3Provider,
           contracts: contracts as IDappContractsProps<Contract>,
+          isBSC: window.ethereum.networkVersion === 56,
         })
       );
     };
@@ -69,7 +70,8 @@ const Web3AppProvider = ({ children }: IWeb3AppProviderProps) => {
 
   useEffect(() => {
     const prevSession = getSessionStorageData(DAPP_STORAGE_KEY);
-    prevSession !== null && dispatch(onAccountStateChanged(prevSession.account));
+    prevSession !== null &&
+      dispatch(onAccountStateChanged(prevSession.account));
   }, []);
 
   return (
@@ -78,6 +80,7 @@ const Web3AppProvider = ({ children }: IWeb3AppProviderProps) => {
         provider: state.provider,
         mmInstalled: state.mmInstalled,
         currAccount: state.currAccount,
+        isBSC: state.isBSC,
         connectAccount: connectAccount,
         contracts: {
           chainPrizes: state.contracts.chainPrizes,

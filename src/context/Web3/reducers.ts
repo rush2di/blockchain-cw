@@ -6,6 +6,7 @@ export const web3InitState = {
   provider: null,
   mmInstalled: null,
   currAccount: null,
+  isBSC: null,
   contracts: {
     chainPrizes: null,
     BUSD: null,
@@ -24,6 +25,7 @@ export const web3Reducer = (
         ...state,
         provider: actions.payload.provider,
         contracts: actions.payload.contracts,
+        isBSC: actions.payload.isBSC,
       };
     case web3ProviderActions.DETECT_WALLET:
       return { ...state, mmInstalled: actions.payload };

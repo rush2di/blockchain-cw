@@ -1,4 +1,5 @@
 export const _APP_NAME = "Chainprizes";
+
 export const _APP_VERSION = "0.1.0";
 
 export const CHAINPRIZES_ADDRESS = process.env.NEXT_PUBLIC_CHAINPRIZES_ADDRESS || "";
@@ -15,15 +16,17 @@ export const USDT_DECIMALS = 6;
 
 export const USDC_DECIMALS = 6;
 
-export const TICKET_PRICE = "1.00";
+export const TICKET_PRICE = "1.75";
 
-export const GAME_TARGET = 10;
+export const GAME_TARGET = 1000000;
 
-export const GAME_FEE_1 = process.env.NEXT_PUBLIC_GAME_FEE_1 || "0.001";
+export const GAME_FEE_1 = "0,0015";
 
-export const GAME_FEE_2 = process.env.NEXT_PUBLIC_GAME_FEE_2 || "0.003";
+export const GAME_FEE_2 = "0,0023";
 
-export const GAME_FEE_3 = process.env.NEXT_PUBLIC_GAME_FEE_3_PLUS || "0.007";
+export const GAME_FEE_3 = "0,0030";
+
+export const GAME_FEE_STEP = "0,0008";
 
 export const HOST_NAME = "http://localhost:3000/";
 

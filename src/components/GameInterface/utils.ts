@@ -11,6 +11,7 @@ import {
   USDT_ADDRESS,
   USDC_ADDRESS,
   CHAINPRIZES_ADDRESS,
+  GAME_FEE_STEP,
 } from "shared/constants";
 import { IDappContractsProps } from "services/ethers";
 import {
@@ -51,14 +52,10 @@ const approvePayment = async (tokenContract: Contract, amount: BigNumber) => {
 };
 
 const participationsToFee = (playerParticipations: number) => {
-  switch (playerParticipations) {
-    case 0:
-      return ethers.utils.parseEther(GAME_FEE_1);
-    case 1:
-      return ethers.utils.parseEther(GAME_FEE_2);
-    default:
-      return ethers.utils.parseEther(GAME_FEE_3);
-  }
+  if (playerParticipations === 0) return ethers.utils.parseEther(GAME_FEE_1);
+  const feeSteps = parseFloat(GAME_FEE_STEP) * playerParticipations
+  const nextFee = parseFloat(GAME_FEE_1) + feeSteps;
+  return ethers.utils.parseEther(nextFee.toFixed(5));
 };
 
 const hasFeeDiscount = (player: User | any) => {
