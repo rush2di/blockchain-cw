@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { initWeb3Response } from "services/ethers";
+import { IWeb3Response } from "services/ethers";
 import { web3ProviderActions } from "./constants";
 import { IWeb3AppContextProps } from "./types";
 
@@ -10,9 +10,7 @@ const onDetectWallet = (payload: IWeb3AppContextProps["mmInstalled"]) => {
   };
 };
 
-const onConnectWallet = (
-  payload: initWeb3Response<ethers.providers.Web3Provider, ethers.Contract>
-) => {
+const onConnectWallet = (payload: Partial<IWeb3AppContextProps>) => {
   return {
     type: web3ProviderActions.CONNECT_WALLET,
     payload,

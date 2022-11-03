@@ -19,7 +19,7 @@ const GameDashboard = ({
   return (
     <Tab.Panel
       className={classNames(
-        "w-full pt-1 lg:py-0-5 bg-shades-1 min-h-[350px]",
+        "w-full pt-1 lg:py-0-5 bg-shades-1 min-h-[350px] shadow-lg",
         "border-shades-3 border rounded-lg px-0 lg:px-1",
         !currAccount ? "flex flex-col items-center justify-center" : "flex"
       )}
@@ -75,7 +75,7 @@ const GameDashboardBody = ({
             <p className="text-md text-shades-7 mx-0-25 mb-1">
               You win 1$ worth of BUSD for each new player you referred + a fee
               discount for your next participation, your won tokens are
-              claimable after the game winner anouncment.
+              claimable after the game winner announcement.
             </p>
           </div>
         </div>
@@ -170,7 +170,7 @@ const GameDashboardNotice = () => {
     <div
       className={classNames(
         "border-red-800 py-0-5 px-1-25 rounded-lg bg-red-600",
-        "w-fit text-center mx-auto flex items-center"
+        "w-fit text-center md:mx-auto flex items-center mx-1-25"
       )}
     >
       <div
@@ -184,7 +184,7 @@ const GameDashboardNotice = () => {
           aria-hidden="true"
         />
       </div>
-      <p>You need to connect your wallet in order to access your dashboard</p>
+      <p className="text-left">You need to connect your wallet in order to access your dashboard</p>
     </div>
   );
 };

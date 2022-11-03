@@ -59,12 +59,6 @@ const GameContextProvider = ({ children }: IGameContextProviderProps) => {
             playerIsWinner,
             playerData,
           }) => {
-            console.log("on detect user", {
-              playerParticipations,
-              playerRewards,
-              playerIsWinner,
-              playerData,
-            });
             dispatch(
               onDetectUser({
                 playerParticipations,

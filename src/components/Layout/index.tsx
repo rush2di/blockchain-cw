@@ -1,14 +1,17 @@
 import axios from "axios";
+import Image from "next/image";
 import { ReactNode, useContext } from "react";
 
 import MetamaskAlert from "components/MetamaskAlert";
+import NetworkAlert from "components/NetworkAlert";
 import Footer from "components/Layout/Footer";
 import Navbar from "components/Layout/Navbar";
 import { Web3AppContext } from "context/Web3";
 import { hasConnectsHistory } from "./utils";
 import { GameContext } from "context/Game";
 import { useRouter } from "next/router";
-import NetworkAlert from "components/NetworkAlert";
+
+import background from "../../../public/assets/bg_base.jpeg"
 
 interface LayoutProps {
   children: ReactNode;
@@ -42,11 +45,22 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Navbar currAccount={currAccount} handleConnect={handleConnect} />
-      <main className="min-h-screen bg-pattern bg-cover bg-left-top">
-        {mmInstalled === false && <MetamaskAlert />}
-        {mmInstalled === true && isBSC === true && <NetworkAlert />}
-        {children}
-      </main>
+      <div className="relative">
+        <Image
+          src={background}
+          placeholder="blur"
+          objectPosition="center"
+          objectFit="cover"
+          layout="fill"
+        />
+        <div className="bg-radial z-[1] relative">
+          <main className="min-h-screen relative z-[2]">
+            {mmInstalled === false && <MetamaskAlert />}
+            {mmInstalled === true && isBSC === true && <NetworkAlert />}
+            {children}
+          </main>
+        </div>
+      </div>
       <Footer />
     </>
   );

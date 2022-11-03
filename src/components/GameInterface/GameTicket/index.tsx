@@ -8,13 +8,13 @@ import {
   TicketButtonsProps,
   TicketProps,
 } from "./types";
-import { ACP_AMOUNT, _tokens } from "./constants";
 import {
   tokenImageTransformer,
   toUSDCurrencyString,
   progressPercent,
 } from "./utils";
 import { classNames } from "shared/utils";
+import { ACP_AMOUNT, _tokens } from "./constants";
 
 const GameTicket = ({
   title,
@@ -29,7 +29,7 @@ const GameTicket = ({
     <Tab.Panel
       className={classNames(
         "w-full bg-shades-1 border-shades-3",
-        "border rounded-lg relative"
+        "border rounded-lg relative shadow-lg"
       )}
     >
       <div className="flex flex-col md:flex-row items-center">
@@ -57,10 +57,10 @@ const GameTicket = ({
             <h1 className="text-shades-10 font-bold mb-0-75 text-1xl">
               {content.heading}
             </h1>
-            <p className="text-shades-7 mb-0-45">{content.intro}</p>
-            <ul className="text-shades-7">
-              <li className="mb-0-45">- {content.winOutcome}</li>
-              <li className="mb-0-45">- {content.loseOutcome}</li>
+            <p className="text-shades-6 mb-0-45">{content.intro}</p>
+            <ul className="text-shades-6">
+              <li className="mb-0-45">{content.winOutcome}</li>
+              <li className="mb-0-45">{content.loseOutcome}</li>
             </ul>
           </div>
           <div className="pt-1 pb-1">
@@ -71,7 +71,7 @@ const GameTicket = ({
               <span className="block text-shades-10 font-bold text-md">
                 {toUSDCurrencyString(content.entryPrice)}
               </span>
-              <span className="block text-shades-7 line-through ml-1 text-md">
+              <span className="block text-shades-6 line-through ml-1 text-md">
                 {toUSDCurrencyString(content.prevPrice)}
               </span>
             </div>
@@ -81,7 +81,7 @@ const GameTicket = ({
               <span className="text-shades-10 font-bold mb-0-5 block text-base">
                 Minimum Participants
               </span>
-              <span className="text-shades-8 mb-0-5 block text-md">
+              <span className="text-shades-6 mb-0-5 block text-md">
                 ≥ {minParticipants}
               </span>
             </div>
@@ -90,7 +90,7 @@ const GameTicket = ({
               <span className="text-shades-10 font-bold mb-0-5 block text-base">
                 Current Participants
               </span>
-              <span className="text-shades-8 mb-0-5 block text-md">
+              <span className="text-shades-6 mb-0-5 block text-md">
                 ~ {currParticipants + ACP_AMOUNT}
               </span>
             </div>
@@ -118,7 +118,10 @@ const TicketProgressBar = ({
     <div className="w-full h-0-5 bg-shades-3 rounded">
       <div
         style={{
-          width: `${progressPercent(minParticipants, currParticipants + ACP_AMOUNT)}%`,
+          width: `${progressPercent(
+            minParticipants,
+            currParticipants + ACP_AMOUNT
+          )}%`,
         }}
         className="h-0-5 bg-amber-500 rounded"
       />

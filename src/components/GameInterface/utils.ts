@@ -4,12 +4,9 @@ import { User } from "@prisma/client";
 import { BigNumber, Contract, ethers } from "ethers";
 
 import {
-  GAME_FEE_1,
-  GAME_FEE_2,
-  GAME_FEE_3,
+  GAME_FEE_BASE,
   BUSD_ADDRESS,
   USDT_ADDRESS,
-  USDC_ADDRESS,
   CHAINPRIZES_ADDRESS,
   GAME_FEE_STEP,
 } from "shared/constants";
@@ -30,8 +27,6 @@ const tokenContractFromAddress = (
       return contracts.BUSD;
     case USDT_ADDRESS:
       return contracts.USDT;
-    case USDC_ADDRESS:
-      return contracts.USDC;
     default:
       return contracts.BUSD;
   }
@@ -52,9 +47,9 @@ const approvePayment = async (tokenContract: Contract, amount: BigNumber) => {
 };
 
 const participationsToFee = (playerParticipations: number) => {
-  if (playerParticipations === 0) return ethers.utils.parseEther(GAME_FEE_1);
+  if (playerParticipations === 0) return ethers.utils.parseEther(GAME_FEE_BASE);
   const feeSteps = parseFloat(GAME_FEE_STEP) * playerParticipations
-  const nextFee = parseFloat(GAME_FEE_1) + feeSteps;
+  const nextFee = parseFloat(GAME_FEE_BASE) + feeSteps;
   return ethers.utils.parseEther(nextFee.toFixed(5));
 };
 
@@ -90,7 +85,7 @@ const playerParticipate = async ({
 }: IPPFuncParams) => {
   const options = {
     value: hasFeeDiscount(player)
-      ? ethers.utils.parseEther(GAME_FEE_1)
+      ? ethers.utils.parseEther(GAME_FEE_BASE)
       : currFeePrice,
   };
   const txParticipation = await gameContract.participate(

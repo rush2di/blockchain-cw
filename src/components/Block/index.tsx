@@ -11,7 +11,7 @@ interface BlockItemProps {
 
 const Block = ({ title, items }: BlockProps) => {
   return (
-    <div className="bg-shades-1 border-shades-3 border rounded-lg lg:p-2 p-1-45">
+    <div className="bg-shades-1 border-shades-3 border rounded-lg lg:p-1-5 p-1-45 shadow-lg">
       <article>
         <h1 className="text-1xl text-shades-10 mb-1 font-bold">{title}</h1>
         <ul>
@@ -29,7 +29,7 @@ const Block = ({ title, items }: BlockProps) => {
 };
 
 const BlockItem = ({ item }: BlockItemProps) => {
-  return <p className="text-shades-7">{item}</p>;
+  return <p className="text-shades-6">{item}</p>;
 };
 
 export default Block;

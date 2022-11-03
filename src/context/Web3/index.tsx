@@ -44,9 +44,10 @@ const Web3AppProvider = ({ children }: IWeb3AppProviderProps) => {
       dispatch(onDetectWallet(false));
     } else {
       dispatch(onDetectWallet(true));
-      window.ethereum.on("accountsChanged", (accounts: string[]) =>
-        handleAccountsChange(accounts)
-      );
+      window.ethereum.on("accountsChanged", (accounts: string[]) => {
+        console.log({ accounts });
+        handleAccountsChange(accounts);
+      });
     }
     return () => {
       window.ethereum?.removeListener("accountsChanged", handleAccountsChange);
@@ -86,7 +87,6 @@ const Web3AppProvider = ({ children }: IWeb3AppProviderProps) => {
           chainPrizes: state.contracts.chainPrizes,
           BUSD: state.contracts.BUSD,
           USDT: state.contracts.USDT,
-          USDC: state.contracts.USDC,
         },
       }}
     >

@@ -19,7 +19,6 @@ const Debuger = () => {
     const amount = ethers.utils.parseEther("100000");
     await contracts.BUSD!.faucet(accounts, amount);
     await contracts.USDT!.faucet(accounts, amount);
-    await contracts.USDC!.faucet(accounts, amount);
   };
 
   const fillContractFunds = async () => {
@@ -57,13 +56,9 @@ const Debuger = () => {
     const usdt = await contracts.USDT!.balanceOf(
       contracts.chainPrizes!.address
     );
-    const usdc = await contracts.USDC!.balanceOf(
-      contracts.chainPrizes!.address
-    );
     console.log(`Contract's Tokens Balance 
     BUSD = ${ethers.utils.formatUnits(busd, 18)}
     USDT = ${ethers.utils.formatUnits(usdt, 6)}
-    USDC = ${ethers.utils.formatUnits(usdc, 6)}
     `);
   };
 

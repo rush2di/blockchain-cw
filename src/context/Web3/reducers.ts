@@ -11,7 +11,6 @@ export const web3InitState = {
     chainPrizes: null,
     BUSD: null,
     USDT: null,
-    USDC: null,
   },
 };
 

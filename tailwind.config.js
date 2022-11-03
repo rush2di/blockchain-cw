@@ -19,10 +19,12 @@ module.exports = {
     extend: {
       backgroundImage: {
         dark: "linear-gradient(180deg, #101010 0%, #0D0D0D 100%)",
-        pattern: "url('/assets/pattern.png')",
+        radial: "radial-gradient(#0d0d0d7d  0%, #0D0D0D 67%)",
+        pattern: "url('/assets/bg_base.jpeg')",
       },
       colors: {
         shades: {
+          0: "#0D0D0D",
           1: "#181818",
           2: "#282828",
           3: "#404040",

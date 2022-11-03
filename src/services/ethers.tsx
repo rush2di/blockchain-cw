@@ -1,22 +1,21 @@
 import { ethers, Contract } from "ethers";
 
-import ChainPrizes from "contracts/ChainPrizes.json";
-import BUSD_c from "contracts/MOCKBUSD.json";
-import USDT_c from "contracts/MOCKUSDT.json";
-import USDC_c from "contracts/MOCKUSDC.json";
-
 import {
   CHAINPRIZES_ADDRESS,
   BUSD_ADDRESS,
   USDT_ADDRESS,
-  USDC_ADDRESS,
+  isProd,
 } from "shared/constants";
+import ChainPrizes from "contracts/ChainPrizes.json";
+import BUSD_dev from "contracts/MOCKBUSD.json";
+import USDT_dev from "contracts/MOCKUSDT.json";
+import BUSD_prod from "contracts/BUSD.json";
+import USDT_prod from "contracts/USDT.json";
 
 export interface IDappContractsProps<T> {
   chainPrizes: T;
   BUSD: T;
   USDT: T;
-  USDC: T;
 }
 
 export interface IWeb3Response<T1, T2> {
@@ -36,14 +35,20 @@ const initWeb3 = async (): Promise<
       ChainPrizes.abi,
       signer
     );
-
-    const BUSD = new Contract(BUSD_ADDRESS as string, BUSD_c.abi, signer);
-    const USDT = new Contract(USDT_ADDRESS as string, USDT_c.abi, signer);
-    const USDC = new Contract(USDC_ADDRESS as string, USDC_c.abi, signer);
+    const BUSD = new Contract(
+      BUSD_ADDRESS as string,
+      isProd ? BUSD_prod.abi : BUSD_dev.abi,
+      signer
+    );
+    const USDT = new Contract(
+      USDT_ADDRESS as string,
+      isProd ? USDT_prod.abi : USDT_dev.abi,
+      signer
+    );
 
     return {
       provider,
-      contracts: { chainPrizes, BUSD, USDT, USDC },
+      contracts: { chainPrizes, BUSD, USDT },
     };
   } else {
     return {
@@ -52,7 +57,6 @@ const initWeb3 = async (): Promise<
         chainPrizes: null,
         BUSD: null,
         USDT: null,
-        USDC: null,
       },
     };
   }
