@@ -1,4 +1,4 @@
-export const _APP_NAME = "Chainprizes";
+export const _APP_NAME = "WinTogeterr";
 
 export const _APP_VERSION = "0.1.0";
 

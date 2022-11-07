@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 
-import Block from "components/Block";
+import Block, { PrizeBlock, PrizeBlockChart } from "components/Block";
 import Layout from "components/Layout";
 import Debuger from "components/Debuger";
 import GameInterface from "components/GameInterface";
@@ -23,9 +23,45 @@ const Chainprizes: NextPage = () => {
         <GameInterface />
       </section>
       <section className="container pt-2">
+        <div className="row">
+          <div className="col-12 lg:col-6">
+            <PrizeBlock
+              title="Prize Funds"
+              text="The prizes for each lottery round come from two sources:"
+              contents={[
+                {
+                  title: "Ticket Purchases",
+                  content:
+                    "100% of the stable coins and fees paid by players buying tickets each round goes back into the prize pool.",
+                },
+                {
+                  title: "Rollovers",
+                  content:
+                    "After every round, the remaining unclaimed stable coins and funds gathered from fees rolls over into the next round and are redistributed to the prize pool.",
+                },
+              ]}
+            />
+          </div>
+          <div className="col-12 lg:col-6 pt-2 lg:pt-0">
+            <PrizeBlockChart
+              title="Prize Pool Distribution"
+              content="List of debits and their prize pool allocation."
+              breakdown={[
+                { text: "winner reward", percentage: 30, className: "bg-yellow-500" },
+                { text: "refunds", percentage: 30, className: "bg-yellow-400" },
+                { text: "referrals rewards", percentage: 20, className: "bg-yellow-300" },
+                { text: "locked for next round", percentage: 10, className: "bg-yellow-200" },
+                { text: "marketing", percentage: 5, className: "bg-yellow-100" },
+                { text: "developers", percentage: 5, className: "bg-yellow-50" },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+      <section className="container pt-2">
         <Block
           title="How to Participate"
-          items={[
+          content={[
             "Connect Metamask and click “Play Now” to deposit $1.75 worth of Binance Smart Chain Network BUSD/USDT.",
             "Each time you purchase a ticket there is a BNB fee that should be paid, your first ticket purchase fee is ~ 0.5$, then for each of your next purchases the fee will be increasing by ~0.25$. ( Make sure you have enough BNB to particapte )",
             "Invite New Users to participate the $1 Game to fix your next ticket purchase fee at 0.5$ BNB.",
@@ -36,7 +72,7 @@ const Chainprizes: NextPage = () => {
       <section className="container pt-2 pb-5">
         <Block
           title="Terms & Conditions"
-          items={[
+          content={[
             "Completing “Play Now” will confirm your participation in this activity, upon successful payment of $1 on the product(s) listed on $1 campaign page.",
             "Winner annoucement will only happen if the participants exceed minimum number of participants.",
           ]}
