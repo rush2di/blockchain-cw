@@ -17,11 +17,6 @@
           "internalType": "address",
           "name": "_token_USDT",
           "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_token_USDC",
-          "type": "address"
         }
       ],
       "stateMutability": "nonpayable",
@@ -357,19 +352,6 @@
     {
       "inputs": [],
       "name": "token_BUSD",
-      "outputs": [
-        {
-          "internalType": "contract IERC20",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "token_USDC",
       "outputs": [
         {
           "internalType": "contract IERC20",
